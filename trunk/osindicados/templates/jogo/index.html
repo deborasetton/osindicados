@@ -1,7 +1,7 @@
 <h1> Lista de Temas </h1>
 
 {% for tema in temas %}
-	{{ tema.nome }} <br/>
+  {{ tema.nome }} <br/>
 {% endfor %}
 
 
@@ -11,14 +11,14 @@
 
 {{ pergunta.idAssunto }} <br/>
 
-	{{ pergunta.enunciado }} <br/>
-	
-	<ul>
-		<li>{{ pergunta.altCorreta }}</li>
-		<li>{{ pergunta.altIncorreta1 }}</li>
-		<li>{{ pergunta.altIncorreta2 }}</li>
-		<li>{{ pergunta.altIncorreta3 }}</li>
-		<li>{{ pergunta.altIncorreta4 }}</li>
-	</ul>
-	
+  {{ pergunta.enunciado }} <br/>
+
+  <ul>
+    <li>{{ pergunta.altCorreta }}</li>
+    <li>{{ pergunta.altIncorreta1 }}</li>
+    <li>{{ pergunta.altIncorreta2 }}</li>
+    <li>{{ pergunta.altIncorreta3 }}</li>
+    <li>{{ pergunta.altIncorreta4 }}</li>
+  </ul>
+
 {% endfor %}

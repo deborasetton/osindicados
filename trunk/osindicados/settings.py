@@ -87,7 +87,7 @@ TEMPLATE_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     # cria o path absoluto a partir da localizacao deste arquivo settings.py
-	os.path.join(ROOT_PATH, "templates")
+  os.path.join(ROOT_PATH, "templates")
 )
 
 INSTALLED_APPS = (
