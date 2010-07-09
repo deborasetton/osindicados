@@ -1,0 +1,24 @@
+<h1> Lista de Temas </h1>
+
+{% for tema in temas %}
+	{{ tema.nome }} <br/>
+{% endfor %}
+
+
+<h1> Lista de Perguntas </h1>
+
+{% for pergunta in perguntas %}
+
+{{ pergunta.idAssunto }} <br/>
+
+	{{ pergunta.enunciado }} <br/>
+	
+	<ul>
+		<li>{{ pergunta.altCorreta }}</li>
+		<li>{{ pergunta.altIncorreta1 }}</li>
+		<li>{{ pergunta.altIncorreta2 }}</li>
+		<li>{{ pergunta.altIncorreta3 }}</li>
+		<li>{{ pergunta.altIncorreta4 }}</li>
+	</ul>
+	
+{% endfor %}
