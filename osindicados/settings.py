@@ -1,4 +1,9 @@
+# -*- coding: utf-8 -*-
 # Django settings for osindicados project.
+
+# fun��o que retorna o path do arquivo settings.py
+import os
+ROOT_PATH = os.path.dirname(__file__)
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -81,7 +86,8 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-	"C:/Python26/Projeto/workspace/osindicados/src/osindicados/templates"
+    # cria o path absoluto a partir da localizacao deste arquivo settings.py
+	os.path.join(ROOT_PATH, "templates")
 )
 
 INSTALLED_APPS = (
