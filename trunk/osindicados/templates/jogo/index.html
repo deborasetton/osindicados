@@ -1,7 +1,7 @@
 <h1> Lista de Temas </h1>
 
-{% for tema in temas %}
-  {{ tema.nome }} <br/>
+{% for entry in list_tema_qntd %}
+  {{ entry.0 }} ( {{ entry.1  }} ) <br/>
 {% endfor %}
 
 
@@ -9,7 +9,7 @@
 
 {% for pergunta in perguntas %}
 
-{{ pergunta.idAssunto }} <br/>
+assunto: {{ pergunta.idAssunto }} - dificuldade: {{pergunta.dificuldade}} ({{pergunta.get_dificuldade_display}}) <br/>
 
   {{ pergunta.enunciado }} <br/>
 
