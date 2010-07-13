@@ -1,6 +1,13 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 
+DIFICULDADES = (
+                    (1, 'fácil'),
+                    (2, 'médio'),
+                    (3, 'difícil'),
+                    (4, 'desafio')
+                )
+
 class Tema(models.Model):
     nome = models.CharField(max_length=30)
     nomeTrofeu = models.CharField(max_length=30)
@@ -9,12 +16,6 @@ class Tema(models.Model):
         return self.nome
 
 class Pergunta(models.Model):
-    DIFICULDADES = (
-                    (1, 'fácil'),
-                    (2, 'médio'),
-                    (3, 'difícil'),
-                    (4, 'desafio')
-                    )
     enunciado = models.CharField(max_length=1000)
     altCorreta = models.CharField(max_length=200)
     altIncorreta1 = models.CharField(max_length=200)
@@ -25,3 +26,13 @@ class Pergunta(models.Model):
     idAssunto = models.ForeignKey(Tema)
     def __unicode__(self):
         return self.enunciado
+
+class Placar(models.Model):
+    nomeJogador = models.CharField(max_length=30)
+    dificuldade = models.IntegerField(choices=DIFICULDADES)
+    acertosEsporte = models.IntegerField()
+    acertosCinema = models.IntegerField()
+    acertosMusica = models.IntegerField()
+    acertosTelevisao = models.IntegerField()
+    acertosCGerais = models.IntegerField()
+    acertosCiencias = models.IntegerField()
