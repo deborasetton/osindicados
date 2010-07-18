@@ -8,4 +8,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
                        (r'^jogo/', include('osindicados.jogo.urls')),
                        (r'^admin/', include(admin.site.urls)),
+                       (r'^$', include(admin.site.urls)),
                        )
+
+        
