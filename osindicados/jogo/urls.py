@@ -7,4 +7,7 @@ urlpatterns = patterns('osindicados.jogo.views',
   (r'^$', 'index'),
   (r'^partida/$', 'partida'),
   (r'^config/$', 'config'),
+  (r'^responder/$', 'responder'),
+  (r'^erro/$', 'erro'),
+  (r'^ganhou/$', 'ganhou'),
 )

@@ -28,12 +28,12 @@ class Pergunta(models.Model):
         return self.enunciado
     
     @staticmethod
-    def getPerguntaPorAssunto(assuntos):
-        return Pergunta.objects.filter(idAssunto__nome__in=assuntos).order_by('?')[:1]
+    def getPerguntaPorAssunto(assuntos, ids=[]):
+        return Pergunta.objects.filter(idAssunto__nome__in=assuntos).exclude(id__in=ids).order_by('?')[:1][0]
     
     @staticmethod
-    def getPerguntaPorIdsAssunto(idsAssunto):
-        return Pergunta.objects.filter(idAssunto__in=idsAssunto).order_by('?')[:1]
+    def getPerguntaPorIdsAssunto(idsAssunto, ids=[]):
+        return Pergunta.objects.filter(idAssunto__in=idsAssunto).exclude(id__in=ids).order_by('?')[:1][0]
     
     @staticmethod
     def getPerguntasPartidaPorAssunto(assuntosPartida):
