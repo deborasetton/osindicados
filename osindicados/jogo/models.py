@@ -26,6 +26,22 @@ class Pergunta(models.Model):
     idAssunto = models.ForeignKey(Tema)
     def __unicode__(self):
         return self.enunciado
+    
+    @staticmethod
+    def getPerguntaPorAssunto(assuntos):
+        return Pergunta.objects.filter(idAssunto__nome__in=assuntos).order_by('?')[:1]
+    
+    @staticmethod
+    def getPerguntaPorIdsAssunto(idsAssunto):
+        return Pergunta.objects.filter(idAssunto__in=idsAssunto).order_by('?')[:1]
+    
+    @staticmethod
+    def getPerguntasPartidaPorAssunto(assuntosPartida):
+        return Pergunta.objects.filter(idAssunto__nome__in=assuntosPartida).order_by('?')[:25]
+    
+    @staticmethod
+    def getPerguntasPartidaPorIdsAssunto(idsAssunto):
+        return Pergunta.objects.filter(idAssunto__in=idsAssunto).order_by('?')[:25]
 
 class Placar(models.Model):
     nomeJogador = models.CharField(max_length=30)
