@@ -1,9 +1,12 @@
+{% extends "jogo/base.html" %}
+
+{% block content %}
 {% load osindicados_filters %}
 
 <h1>Pergunta:</h1> (faltam {{ respondidas|faltam }} perguntas)
 
 <h2>{{ pergunta.enunciado }}</h2>
-<form method="post" action="../responder/" name="responder_frm">
+<form method="post" action="../responder/" name="responder_frm" id="responder_frm">
 {% csrf_token %}
 {% for alternativa in alternativas %}
 <input type="radio" name="alternativa" value="{{alternativa}}"> {{ alternativa }} 
@@ -32,3 +35,4 @@
     <li>Dificuldade: {{ confs.dificuldade }}</li>
     <li>Temas: {{ confs.temas }}</li>
 </ul>
+{% endblock content %}
