@@ -1,6 +1,14 @@
-<h1>Pergunta</h1>
+<h1>Pergunta:</h1> (faltam {{}} perguntas)
 
-
+<h2>{{ pergunta.enunciado }}</h2>
+<form method="post" action="../responder/" name="responder_frm">
+{% csrf_token %}
+{% for alternativa in alternativas %}
+<input type="radio" name="alternativa" value="{{alternativa}}"> {{ alternativa }} <br/></input>
+{% endfor %}
+<input type="text" name="perguntaId" value="{{pergunta.id}}"/>
+<input type="submit" value="responder"/>
+</form>
 
 
 <h1>Ajudas</h1>
