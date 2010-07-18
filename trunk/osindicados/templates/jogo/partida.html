@@ -1,4 +1,6 @@
-<h1>Pergunta:</h1> (faltam {{}} perguntas)
+{% load osindicados_filters %}
+
+<h1>Pergunta:</h1> (faltam {{ respondidas|faltam }} perguntas)
 
 <h2>{{ pergunta.enunciado }}</h2>
 <form method="post" action="../responder/" name="responder_frm">
