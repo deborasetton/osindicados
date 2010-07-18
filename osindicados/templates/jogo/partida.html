@@ -6,18 +6,27 @@
 <form method="post" action="../responder/" name="responder_frm">
 {% csrf_token %}
 {% for alternativa in alternativas %}
-<input type="radio" name="alternativa" value="{{alternativa}}"> {{ alternativa }} <br/></input>
+<input type="radio" name="alternativa" value="{{alternativa}}"> {{ alternativa }} 
+{% if eliminadas and alternativa in eliminadas %}
+(eliminada)
+{% endif %}<br/></input>
 {% endfor %}
 <input type="text" name="perguntaId" value="{{pergunta.id}}"/>
 <input type="submit" value="responder"/>
 </form>
 
 
-<h1>Ajudas</h1>
+<h1>Ajudas Dispon&iacute;veis</h1>
 
+<h2>Troca: {{ ajudas.troca }}</h2>
+<a href="../ajudaTroca/">Trocar pergunta</a>
+<h2>Elimina&ccedil;&atilde;o de alternativas: {{ ajudas.elimina }}</h2>
+{% if not eliminadas %}<a href="../ajudaElimina/">Eliminar duas alternativas incorretas</a> {% endif %}
+<h2>Extens&atilde;o de tempo: {{ ajudas.tempo }}</h2>
+<a href="../ajudaTempo/" onclick="alert('Aumentando seu tempo...'); return false;">Aumentar o tempo</a>
 <h1>Tempo</h1>
 
-<h1>Configuracoes</h1>
+<h1>Configura&ccedil;&otilde;es</h1>
 
 <ul>
     <li>Dificuldade: {{ confs.dificuldade }}</li>
