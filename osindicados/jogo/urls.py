@@ -4,5 +4,7 @@ from osindicados.jogo.models import Tema
 from osindicados.jogo.models import Pergunta
 
 urlpatterns = patterns('osindicados.jogo.views',
-  (r'^$', 'index')
+  (r'^$', 'index'),
+  (r'^partida/$', 'partida'),
+  (r'^config/$', 'config'),
 )
