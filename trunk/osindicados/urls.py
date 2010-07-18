@@ -11,6 +11,6 @@ urlpatterns = patterns('',
                        (r'^admin/', include(admin.site.urls)),
                        (r'^osindicadosmedia/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
                        (r'^$', include(admin.site.urls)),
+                       (r'^backup/', include('osindicados.backup.urls')),
                        )
 
-        
