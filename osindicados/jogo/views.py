@@ -22,6 +22,12 @@ def partida(request):
     Busca uma nova pergunta e repassa a tela.
     """
     
+    # Testa se já existe uma pergunta sendo respondida. Se houver, continua com a mesma. Assim, caso o usuário
+    # atualize a página, ele não "ganha" uma ajuda de troca de graça.
+    if 'pergunta' in request.session:
+        return render_to_response('jogo/partida.html', {'confs': request.session['confs'], 'pergunta' : request.session['pergunta'], 'alternativas' : request.session.get('alternativas'), 'respondidas' : request.session.get('respondidas')}, context_instance=RequestContext(request))
+
+    # Testa se o usuário já passou pela tela de configuração. Se não passou, mostra mensagem de erro.
     if 'confs' in request.session:
         if 'p_ids' in request.session:
             # Nao e' a primeira pergunta. Recupera a lista de ids que ja' foram
@@ -40,16 +46,15 @@ def partida(request):
             # Adiciona a lista 'a sessao
             request.session['p_ids'] = p_ids
             request.session['respondidas'] = 0
+        
+        
+        mixed = sortearAlternativas(pergunta)
     
         request.session['pergunta'] = pergunta
+        request.session['alternativas'] = mixed
     
-        print "Pergunta: ", pergunta.enunciado
-        print "Pids: ", p_ids
-        
-        print "Alternativas originais: ", pergunta.altCorreta, pergunta.altIncorreta1, pergunta.altIncorreta2, pergunta.altIncorreta3, pergunta.altIncorreta4
-        mixed = sortearAlternativas(pergunta)
-        print "Alternativas random: ", [a for a in mixed]
         return render_to_response('jogo/partida.html', {'confs': request.session['confs'], 'pergunta' : pergunta, 'alternativas' : mixed, 'respondidas' : request.session.get('respondidas')}, context_instance=RequestContext(request))
+    # Usuário ainda não configurou a partida
     else:
         return HttpResponse("Vc ainda nao configurou sua partida.")
 
@@ -60,6 +65,7 @@ def config(request):
     # Cria um novo objeto passando as opções do usuário
     conf = Partidaconfs(dificuldade, temas)
     # Coloca na sessão
+    request.session.clear()
     request.session['confs'] = conf
     return render_to_response('jogo/config.html')
 
@@ -75,9 +81,11 @@ def responder(request):
     
     if 'pergunta' in request.session:
         pergunta = request.session['pergunta']
-        print "Alternativa correta: ", pergunta.altCorreta
-        print "Alternativa selecionada: ", request.POST["alternativa"]
-        print pergunta.altCorreta == altSelecionada
+        
+        # Retira a pergunta da sessão. Necessário pois a view Partida só carrega uma pergunta nova se não houver nenhuma na sessão.
+        del request.session['pergunta'] 
+        
+        
         if pergunta.altCorreta == altSelecionada:
             if int(request.session['respondidas']) == 4:
                 # Respondeu a ultima pergunta corretamente. Fim de jogo.
