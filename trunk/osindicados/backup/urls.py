@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.conf.urls.defaults import *
 
-urlpatterns = patterns('osindicados.backup.views',
-  (r'^$', 'index'),
+urlpatterns = patterns('',
+  (r'^$', 'osindicados.backup.views.index'),
 )
