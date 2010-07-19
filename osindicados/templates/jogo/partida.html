@@ -1,38 +1,50 @@
 {% extends "jogo/base.html" %}
 
 {% block content %}
-{% load osindicados_filters %}
-
-<h1>Pergunta:</h1> (faltam {{ respondidas|faltam }} perguntas)
-
-<h2>{{ pergunta.enunciado }}</h2>
-<form method="post" action="../responder/" name="responder_frm" id="responder_frm">
-{% csrf_token %}
-{% for alternativa in alternativas %}
-<input type="radio" name="alternativa" value="{{alternativa}}"> {{ alternativa }} 
-{% if eliminadas and alternativa in eliminadas %}
-(eliminada)
-{% endif %}<br/></input>
-{% endfor %}
-<input type="text" name="perguntaId" value="{{pergunta.id}}"/>
-<input type="submit" value="responder"/>
-</form>
-
-
-<h1>Ajudas Dispon&iacute;veis</h1>
-
-<h2>Troca: {{ ajudas.troca }}</h2>
-<a href="../ajudaTroca/">Trocar pergunta</a>
-<h2>Elimina&ccedil;&atilde;o de alternativas: {{ ajudas.elimina }}</h2>
-{% if not eliminadas %}<a href="../ajudaElimina/">Eliminar duas alternativas incorretas</a> {% endif %}
-<h2>Extens&atilde;o de tempo: {{ ajudas.tempo }}</h2>
-<a href="../ajudaTempo/" onclick="alert('Aumentando seu tempo...'); return false;">Aumentar o tempo</a>
-<h1>Tempo</h1>
-
-<h1>Configura&ccedil;&otilde;es</h1>
-
-<ul>
-    <li>Dificuldade: {{ confs.dificuldade }}</li>
-    <li>Temas: {{ confs.temas }}</li>
-</ul>
+	{% load osindicados_filters %}
+	
+	<h1>Pergunta:</h1> (faltam {{ respondidas|faltam }} perguntas)
+	
+	<h2>{{ pergunta.enunciado }}</h2>
+	<form method="post" action="../responder/" name="responder_frm" id="responder_frm" onsubmit="$('#hr').get(0).value = new Date().getTime()/1000">
+		{% csrf_token %}
+		{% for alternativa in alternativas %}
+			  <input type="radio" name="alternativa" value="{{alternativa}}"> {{ alternativa }} 
+			{% if eliminadas and alternativa in eliminadas %}
+			  (eliminada)
+			{% endif %}<br/></input>
+		{% endfor %}
+		<input type="text" name="perguntaId" value="{{pergunta.id}}"/>
+		<input type="text" name="hr" value="" id="hr"/>
+		<input type="submit" value="responder"/>
+	</form>
+	
+	<h1>Tempo</h1>
+    <div id="monitor"></div>
+    
+    <div id="timer"></div>
+    <div id="timer2"></div>
+    
+    <a href="#" onclick="$('#timer').countdown({until: +30, format: 'S', compact: true, onExpiry: liftOff, onTick: watchCountdown, serverSync: serverTime}); return false;">Iniciar</a>
+    <a href="#" onclick="$('#timer').countdown('destroy'); return false;">Destruir</a>
+    <a href="#" onclick="$('#timer').countdown('change', {until: (($('#timer').countdown('getTimes'))[6]+30)}); aumentarTempo(); return false;">Aumentar tempo</a>
+    
+	
+	
+	<h1>Ajudas Dispon&iacute;veis</h1>
+	
+	<h2>Troca: {{ ajudas.troca }}</h2>
+	<a href="../ajudaTroca/">Trocar pergunta</a>
+	<h2>Elimina&ccedil;&atilde;o de alternativas: {{ ajudas.elimina }}</h2>
+	{% if not eliminadas %}<a href="../ajudaElimina/">Eliminar duas alternativas incorretas</a> {% endif %}
+	<h2>Extens&atilde;o de tempo: {{ ajudas.tempo }}</h2>
+	<a href="../ajudaTempo/" onclick="alert('Aumentando seu tempo...'); return false;">Aumentar o tempo</a>
+	
+	
+	<h1>Configura&ccedil;&otilde;es</h1>
+	
+	<ul>
+	    <li>Dificuldade: {{ confs.dificuldade }}</li>
+	    <li>Temas: {{ confs.temas }}</li>
+	</ul>
 {% endblock content %}
