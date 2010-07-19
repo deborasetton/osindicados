@@ -8,7 +8,8 @@ from django.shortcuts import render_to_response
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
-from ctypes.wintypes import INT
+import time
+from django.core.context_processors import request
 
 def index(request):
     temas = Tema.objects.all()
@@ -83,6 +84,30 @@ def responder(request):
     Vem para cá quando o usuário responde uma pergunta.
     O request deve conter a resposta dada pelo usuário e o id da pergunta.
     """
+    # Verificacao de tempo
+    horarioInicio = float(request.session['hr_inicio']) # Horario em que o timer foi iniciado
+    horarioFim = float(request.POST['hr']) # Horario em que o form foi submetido
+    
+    if 'hr_extensao' in request.session:
+        # Se houve extensao, o usuario teve 60 segundos para responder
+        horarioFimTeorico = horarioInicio + 60
+        del request.session['hr_extensao']
+        del request.session['hr_inicio']
+    else:
+        # Se nao houve extensao, o usuario teve so 30 segundos para responder
+        horarioFimTeorico = horarioInicio + 30
+    
+    # Informacao de debug
+    print (horarioFim - horarioInicio)
+    print (horarioFim - horarioFimTeorico)
+    
+    # Tolerancia maxima de 1 segundo de diferenca entre o esperado e o real
+    if (horarioFim - horarioFimTeorico) > 1:
+        request.session.clear()
+        return HttpResponseRedirect(reverse('osindicados.jogo.views.erro'))
+    
+    # Passou pela verificacao de tempo. Comeca a logica da resposta.
+    
     altSelecionada = request.POST["alternativa"]
     
     if 'respondidas' not in request.session:
@@ -95,7 +120,8 @@ def responder(request):
         del request.session['pergunta'] 
         
         # Retira a lista de eliminadas tb (importante caso 2 perguntas tenham alternativas iguais)
-        del request.session['eliminadas']
+        if 'eliminadas' in request.session:
+            del request.session['eliminadas']
         
         if pergunta.altCorreta == altSelecionada:
             if int(request.session['respondidas']) == 4:
@@ -164,7 +190,15 @@ def ajudaElimina(request):
         return HttpResponseRedirect(reverse('osindicados.jogo.views.partida'))
     else:
         return HttpResponse('Voce esta roubando...')
-        
-    
+
+def horario(request):
+    now = time.time()
+    request.session['hr_inicio'] = now
+    return HttpResponse(now)      
+
+def ajudaTempo(request):
+    now = time.time()
+    request.session['hr_extensao'] = now
+    return HttpResponse(now)
     
     
