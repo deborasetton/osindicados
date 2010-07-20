@@ -2,23 +2,26 @@
 
 {% block content %}
 	{% load osindicados_filters %}
+		<div id="alternativas">
 	
 	<h1>Pergunta:</h1> (faltam {{ respondidas|faltam }} perguntas)
 	
 	<h2>{{ pergunta.enunciado }}</h2>
 	<form method="post" action="../responder/" name="responder_frm" id="responder_frm" onsubmit="$('#hr').get(0).value = new Date().getTime()/1000">
 		{% csrf_token %}
-		{% for alternativa in alternativas %}
-			  <input type="radio" name="alternativa" value="{{alternativa}}"> {{ alternativa }} 
-			{% if eliminadas and alternativa in eliminadas %}
-			  (eliminada)
-			{% endif %}<br/></input>
-		{% endfor %}
+			{% for alternativa in alternativas %}
+				  <input type="radio" name="alternativa" value="{{alternativa}}"> {{ alternativa }} 
+				{% if eliminadas and alternativa in eliminadas %}
+				  (eliminada)
+				{% endif %}<br/></input>
+			{% endfor %}
+		
 		<input type="text" name="perguntaId" value="{{pergunta.id}}"/>
 		<input type="text" name="hr" value="" id="hr"/>
 		<input type="submit" value="responder"/>
 	</form>
 	
+		</div>
 	<h1>Tempo</h1>
     <div id="monitor"></div>
     
@@ -36,7 +39,7 @@
 	<h2>Troca: {{ ajudas.troca }}</h2>
 	<a href="../ajudaTroca/">Trocar pergunta</a>
 	<h2>Elimina&ccedil;&atilde;o de alternativas: {{ ajudas.elimina }}</h2>
-	{% if not eliminadas %}<a href="../ajudaElimina/">Eliminar duas alternativas incorretas</a> {% endif %}
+	{% if not eliminadas %}<a href="#" onclick="ajudaElimina(); return false;">Eliminar duas alternativas incorretas</a> {% endif %}
 	<h2>Extens&atilde;o de tempo: {{ ajudas.tempo }}</h2>
 	<a href="../ajudaTempo/" onclick="alert('Aumentando seu tempo...'); return false;">Aumentar o tempo</a>
 	
