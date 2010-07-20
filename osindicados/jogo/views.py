@@ -229,9 +229,17 @@ def ajudaTempo(request):
     Apenas grava o horário que o usuário solicitou a ajuda, para conferir mais tarde se o tempo
     de resposta não passou de 60 segundos.
     """
-    now = time.time()
-    request.session['hr_extensao'] = now
-    return HttpResponse(now)
+    
+    # Verifica se o usuário tem mesmo uma ajuda de tempo
+    ajudas = request.session['ajudas']
+    ajudasTempo = int(ajudas['tempo'])
+    
+    if ajudasTempo > 0:        
+        now = time.time()
+        request.session['hr_extensao'] = now
+        return HttpResponse(now)
+    else:
+        return HttpResponse('Voce esta roubando...')
     
 def entrarRanking(request):
     """
