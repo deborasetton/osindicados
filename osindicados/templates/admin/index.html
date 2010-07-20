@@ -1,3 +1,4 @@
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 {% extends "admin/base_site.html" %}
 {% load i18n %}
 
@@ -12,9 +13,13 @@
 {% block content %}
 <div id="content-main">
 	<div class="module">
-		<table>
-			<caption><a href="../backup" class="section">Modulo de Backup do Banco de Dados</a></caption>
-		</table>
+		<table width="100%">
+        <caption><a href="../backup" class="section">Backup do Banco de Dados</a></caption>
+        <tbody><tr>
+               <td><a href="../backup">Clique aqui para fazer download ou upload do arquivo de backup</a></td>
+	           </tr>
+	    </tbody>
+	    </table>
 	</div>
 {% if app_list %}
     {% for app in app_list %}
