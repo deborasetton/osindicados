@@ -46,3 +46,10 @@ function highlightLast5(periods) {
       onTick: highlightLast5, 
       serverSync: serverTime});
  });
+ 
+ function ajudaElimina() {
+    $('#alternativas').load("http://localhost:8000/jogo/ajudaElimina/")
+ }
+ 
+ 
+ 
