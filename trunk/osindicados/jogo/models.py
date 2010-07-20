@@ -52,3 +52,21 @@ class Placar(models.Model):
     acertosTelevisao = models.IntegerField()
     acertosCGerais = models.IntegerField()
     acertosCiencias = models.IntegerField()
+    
+    def __init__(self):
+        self.acertosEsporte = 0
+        self.acertosCinema = 0
+        self.acertosMusica = 0
+        self.acertosTelevisao = 0
+        self.acertosCGerais = 0
+        self.acertosCiencias = 0
+    
+    def __unicode__(self):
+        pontos = {'Esporte' : self.acertosEsporte, 
+                'Cinema' : self.acertosCinema,
+                'Musica' : self.acertosMusica,
+                'Televisao' : self.acertosTelevisao,
+                'CGerais' : self.acertosCGerais,
+                'Ciencias' : self.acertosCiencias }
+        return str(pontos)
+        

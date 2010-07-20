@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import random
-from osindicados.jogo.models import Tema, Pergunta
+from osindicados.jogo.models import Tema, Pergunta, Placar
 from osindicados.jogo.partidaconfs import *
 from osindicados.jogo.utils import sortearAlternativas
 from django.shortcuts import render_to_response
@@ -9,7 +9,6 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 import time
-from django.core.context_processors import request
 
 def index(request):
     temas = Tema.objects.all()
@@ -29,7 +28,7 @@ def partida(request):
     # Testa se já existe uma pergunta sendo respondida. Se houver, continua com a mesma. Assim, caso o usuário
     # atualize a página, ele não "ganha" uma ajuda de troca de graça.
     if 'pergunta' in request.session:
-        return render_to_response('jogo/partida.html', {'confs': request.session['confs'], 'pergunta' : request.session['pergunta'], 'alternativas' : request.session.get('alternativas'), 'respondidas' : request.session.get('respondidas'), 'ajudas' : request.session.get('ajudas'), 'eliminadas' : request.session.get('eliminadas')}, context_instance=RequestContext(request))
+        return render_to_response('jogo/partida.html', {'confs': request.session['confs'], 'pergunta' : request.session['pergunta'], 'alternativas' : request.session.get('alternativas'), 'respondidas' : request.session.get('respondidas'), 'ajudas' : request.session.get('ajudas'), 'eliminadas' : request.session.get('eliminadas'), 'placar' : request.session.get('placar')}, context_instance=RequestContext(request))
 
     # Testa se o usuário já passou pela tela de configuração. Se não passou, mostra mensagem de erro.
     if 'confs' in request.session:
@@ -50,7 +49,7 @@ def partida(request):
             # Adiciona a lista 'a sessao
             request.session['p_ids'] = p_ids
             request.session['respondidas'] = 0
-        
+                   
         
         mixed = sortearAlternativas(pergunta)
     
@@ -58,7 +57,7 @@ def partida(request):
         request.session['alternativas'] = mixed
         print "Eliminadas: ", request.session.get('eliminadas')
     
-        return render_to_response('jogo/partida.html', {'confs': request.session['confs'], 'pergunta' : pergunta, 'alternativas' : mixed, 'respondidas' : request.session.get('respondidas'), 'ajudas' : request.session.get('ajudas'), 'eliminadas' : request.session.get('eliminadas')}, context_instance=RequestContext(request))
+        return render_to_response('jogo/partida.html', {'confs': request.session['confs'], 'pergunta' : pergunta, 'alternativas' : mixed, 'respondidas' : request.session.get('respondidas'), 'ajudas' : request.session.get('ajudas'), 'eliminadas' : request.session.get('eliminadas'), 'placar' : request.session.get('placar')}, context_instance=RequestContext(request))
     # Usuário ainda não configurou a partida
     else:
         return HttpResponse("Vc ainda nao configurou sua partida.")
@@ -66,7 +65,7 @@ def partida(request):
 def config(request):
     # Mock para as opções do usuário
     dificuldade = 2
-    temas = ['Cinema', 'Televisão']
+    temas = ['Ciências', 'Música']
     # Cria um novo objeto passando as opções do usuário
     conf = Partidaconfs(dificuldade, temas)
     # Coloca na sessão
@@ -76,6 +75,8 @@ def config(request):
     # Inicializa as ajudas. Só um mock por enquanto
     ajudas = {'troca' : 3, 'elimina' : 3, 'tempo' : 3}
     request.session['ajudas'] = ajudas
+    placar = Placar()
+    request.session['placar'] = placar
     
     return render_to_response('jogo/config.html')
 
@@ -85,26 +86,26 @@ def responder(request):
     O request deve conter a resposta dada pelo usuário e o id da pergunta.
     """
     # Verificacao de tempo
-    horarioInicio = float(request.session['hr_inicio']) # Horario em que o timer foi iniciado
-    horarioFim = float(request.POST['hr']) # Horario em que o form foi submetido
-    
-    if 'hr_extensao' in request.session:
-        # Se houve extensao, o usuario teve 60 segundos para responder
-        horarioFimTeorico = horarioInicio + 60
-        del request.session['hr_extensao']
-        del request.session['hr_inicio']
-    else:
-        # Se nao houve extensao, o usuario teve so 30 segundos para responder
-        horarioFimTeorico = horarioInicio + 30
-    
-    # Informacao de debug
-    print (horarioFim - horarioInicio)
-    print (horarioFim - horarioFimTeorico)
-    
-    # Tolerancia maxima de 1 segundo de diferenca entre o esperado e o real
-    if (horarioFim - horarioFimTeorico) > 1:
-        request.session.clear()
-        return HttpResponseRedirect(reverse('osindicados.jogo.views.erro'))
+#    horarioInicio = float(request.session['hr_inicio']) # Horario em que o timer foi iniciado
+#    horarioFim = float(request.POST['hr']) # Horario em que o form foi submetido
+#    
+#    if 'hr_extensao' in request.session:
+#        # Se houve extensao, o usuario teve 60 segundos para responder
+#        horarioFimTeorico = horarioInicio + 60
+#        del request.session['hr_extensao']
+#        del request.session['hr_inicio']
+#    else:
+#        # Se nao houve extensao, o usuario teve so 30 segundos para responder
+#        horarioFimTeorico = horarioInicio + 30
+#    
+#    # Informacao de debug
+#    print (horarioFim - horarioInicio)
+#    print (horarioFim - horarioFimTeorico)
+#    
+#    # Tolerancia maxima de 1 segundo de diferenca entre o esperado e o real
+#    if (horarioFim - horarioFimTeorico) > 1:
+#        request.session.clear()
+#        return HttpResponseRedirect(reverse('osindicados.jogo.views.erro'))
     
     # Passou pela verificacao de tempo. Comeca a logica da resposta.
     
@@ -126,9 +127,14 @@ def responder(request):
         if pergunta.altCorreta == altSelecionada:
             if int(request.session['respondidas']) == 4:
                 # Respondeu a ultima pergunta corretamente. Fim de jogo.
+                # Atualiza o placar antes.
+                request.session['placar'] = incrementarPlacar(request.session['placar'], pergunta)
                 return HttpResponseRedirect(reverse('osindicados.jogo.views.ganhou'))
             else:
                 # Respondeu certo, mas nao eh a ultima
+                # Atualiza o placar
+                request.session['placar'] = incrementarPlacar(request.session['placar'], pergunta)
+                # Atualiza o numero de perguntas respondidas
                 request.session['respondidas'] = int(request.session['respondidas']) + 1
                 return HttpResponseRedirect(reverse('osindicados.jogo.views.partida'))
         else:
@@ -154,7 +160,8 @@ def ajudaTroca(request):
         # Retira a pergunta da sessão, para poder trocar
         del request.session['pergunta']
         # Retira a lista de eliminadas tb (importante caso 2 perguntas tenham alternativas iguais)
-        del request.session['eliminadas']
+        if 'eliminadas' in request.session:
+            del request.session['eliminadas']
         # Volta à tela de partida
         return HttpResponseRedirect(reverse('osindicados.jogo.views.partida'))
     # Não tinha uma ajuda.
@@ -201,4 +208,29 @@ def ajudaTempo(request):
     request.session['hr_extensao'] = now
     return HttpResponse(now)
     
+########################### Funções auxiliares ##############################
+
+def incrementarPlacar(placar, pergunta):
     
+    print 'Entrou ', pergunta.idAssunto.nome, placar
+    
+    if(pergunta.idAssunto.nome == 'Esporte'):
+        print 'Esporte!'
+        placar.acertosEsporte = int(placar.acertosEsporte) + 1
+    elif(pergunta.idAssunto.nome == 'Conhecimentos Gerais'):
+        print 'CG!'
+        placar.acertosCGerais = int(placar.acertosCGerais) + 1
+    elif(pergunta.idAssunto.nome == 'Cinema'):
+        print 'Cinema!'
+        placar.acertosCinema = int(placar.acertosCinema) + 1
+    elif(pergunta.idAssunto.nome == u'Televis\xe3o'):
+        print 'TV!'
+        placar.acertosTelevisao = int(placar.acertosTelevisao) + 1
+    elif(pergunta.idAssunto.nome == u'Ci\xeancias'):
+        print 'Ciencias!'
+        placar.acertosCiencias = int(placar.acertosCiencias) + 1
+    elif(pergunta.idAssunto.nome == u'M\xfasica'):
+        print 'Musica!'
+        placar.acertosMusica = int(placar.acertosMusica) + 1
+    print 'Saiu ', placar
+    return placar
