@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
+from django.utils.datetime_safe import strftime
 from django.views.decorators.csrf import csrf_exempt
 from subprocess import PIPE, Popen
+import datetime
 import os
-import subprocess
 
 @login_required
 @csrf_exempt
@@ -18,7 +20,8 @@ def index(request):
     if request.method == 'POST':
         # opção selecionada = download do banco
         if request.POST['mode'] == 'download':
-            nome ='teste.json' #TODO
+            now =  datetime.datetime.now()
+            nome = 'banco_osindicados_' + now.strftime("%Y-%m-%d_%Hh%Mm%Ss") +'.json'
             print os.listdir('.')
             saida = Popen(['python', 'manage.py', 'dumpdata'], stdout=PIPE).communicate()[0]
             response = HttpResponse(saida, mimetype='application/octet-stream')
@@ -26,6 +29,11 @@ def index(request):
             return response
         # opcao selecionada = upload do banco
         if request.POST['mode'] == 'upload':
+            #faz backup de segurança do banco
+            saida = Popen(['python', 'manage.py', 'dumpdata'], stdout=PIPE).communicate()[0]
+            security_backup = open('backup\\backup_data\\' + 'security_backup.json', 'wb+')
+            security_backup.write(saida)
+            security_backup.close()
             #guarda arquivo recebido
             f = request.FILES['file']
             destination = open('backup\\backup_data\\' + f.name, 'wb+')
@@ -33,22 +41,19 @@ def index(request):
             for chunk in f.chunks():
                 destination.write(chunk)
             destination.close()
-            #verificar se eh possível realizar loaddata com arquivo recebido
-
             #limpa o banco
-            saida = Popen(['python', 'manage.py', 'flush', '--noinput'], stdout=PIPE).communicate()[0]
-            print saida
+            Popen(['python', 'manage.py', 'flush', '--noinput'], stdout=PIPE).communicate()
             #recupera backup usando o arquivo recebido
             saida = Popen(['python', 'manage.py', 'loaddata', destination.name], stdout=PIPE).communicate()
-            print 'saida:'
-            print saida[0]
-            print saida[1]
-
-            # verifica se comando anterior retornou erro
-            if saida[0] != '': #TODO: isso não é suficiente... =(
-                #deleta arquivo
-                os.remove(destination.name)
-                return HttpResponse('Upload realizado com sucesso! saida:')
+            #deleta arquivo
+            os.remove(destination.name)
+            # verifica se a recuperacao eh valida (verifica se existe pelo menos um usuario cadastrado no sistema
+            if len(User.objects.all()) > 0:
+                #reguperacao valida
+                return HttpResponse('Upload realizado com sucesso! saida:' + saida[0])
             else:
                 # não foi possivel realizar loaddata.
-                return HttpResponse('ERRO AO REALIZAR UPLOAD')
+                #recupera estado anterior
+                Popen(['python', 'manage.py', 'flush', '--noinput'], stdout=PIPE).communicate()
+                Popen(['python', 'manage.py', 'loaddata', security_backup.name], stdout=PIPE).communicate()
+                return HttpResponse('ERRO AO REALIZAR UPLOAD, nenhuma alteracao foi realizada. Verifique se o arquivo selecionado corresponde a um backup feito anteriormente')
