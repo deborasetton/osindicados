@@ -82,7 +82,7 @@ def config(request):
 
 def responder(request):
     """
-    Vem para cá quando o usuário responde uma pergunta.
+    Executado quando o usuário responde uma pergunta.
     O request deve conter a resposta dada pelo usuário e o id da pergunta.
     """
     # Verificacao de tempo
@@ -144,12 +144,24 @@ def responder(request):
     
 
 def erro(request):
+    """
+    Executado quando o usuário erra uma pergunta, quando o tempo esgota ou quando se verifica que o usuário
+    está trapaceando (por exemplo, alterar o timer da tela).
+    """
     return render_to_response('jogo/erro.html')
 
 def ganhou(request):
-    return render_to_response('jogo/ganhou.html')
+    """
+    Executado quando o usuário ganha a partida (25 respostas corretas)
+    """
+    return render_to_response('jogo/ganhou.html', context_instance=RequestContext(request))
 
 def ajudaTroca(request):
+    """
+    Executado quando o usuário solicita a ajuda de troca de pergunta.
+    Verifica se o usuário ainda pode solicitar esta ajuda e, caso possa, retira da sessão a pergunta atual e
+    redireciona à tela de partida
+    """
     # Verifica se o usuário tem mesmo uma ajuda de troca.
     ajudas = request.session['ajudas']
     trocas = int(ajudas['troca'])
@@ -169,7 +181,11 @@ def ajudaTroca(request):
         return HttpResponse("Voce est&aacute; roubando...")
     
 def ajudaElimina(request):
-    
+    """
+    Executado quando o usuário solicita uma ajuda de eliminação de alternativas.
+    Verifica se o usuário ainda pode solicitar esta ajuda e, caso possa, embaralha as alternativas erradas
+    e marca as duas primeiras como eliminadas.
+    """
     print "Entrooou"
     
     # Verifica se o usuário tem mesmo uma ajuda de eliminação
@@ -199,19 +215,63 @@ def ajudaElimina(request):
         return HttpResponse('Voce esta roubando...')
 
 def horario(request):
+    """
+    Executado quando o timer da tela de pergunta é iniciado. Retorna o horário atual do servidor, para sincronia
+    com o browser do cliente, e grava na sessão o horário de início da contagem.
+    """
     now = time.time()
     request.session['hr_inicio'] = now
     return HttpResponse(now)      
 
 def ajudaTempo(request):
+    """
+    Executado quando o usuário solicita uma ajuda de extensão de tempo.
+    Apenas grava o horário que o usuário solicitou a ajuda, para conferir mais tarde se o tempo
+    de resposta não passou de 60 segundos.
+    """
     now = time.time()
     request.session['hr_extensao'] = now
     return HttpResponse(now)
     
+def entrarRanking(request):
+    """
+    Executado quando o usuário submete o form de entrar para o ranking.
+    Pensar se não dá para colocar tudo no método ranking mesmo.
+    """
+    
+    # Nome do usuário
+    nomeUsuario = request.POST['nomeUsuario']
+    # Placar do usuário
+    placarUsuario = request.session['placar']
+    # Configurações da partida (dificuldade e temas)
+    configuracoesPartida = request.session['confs']
+
+    # Atualiza o placar com o nome do jogador    
+    placarUsuario.nomeJogador = nomeUsuario
+    # Atualiza o placar com a dificuldade da partida
+    placarUsuario.dificuldade = int(configuracoesPartida.dificuldade)
+    
+    # Para debug, tirar depois
+    print placarUsuario.nomeJogador
+    print placarUsuario.dificuldade
+    print placarUsuario
+    
+    # Salva o placar no BD
+    placarUsuario.save()
+
+    # Redireciona à tela de ranking
+    return HttpResponseRedirect(reverse('osindicados.jogo.views.ranking'))
+
+def ranking(request):
+    return HttpResponse("Tela de Ranking!")
+
 ########################### Funções auxiliares ##############################
 
 def incrementarPlacar(placar, pergunta):
-    
+    """
+    Incrementa o placar atual do jogador, de acordo com o tema da pergunta que foi acertada.
+    TODO: Apagar os prints, são apenas para debug
+    """
     print 'Entrou ', pergunta.idAssunto.nome, placar
     
     if(pergunta.idAssunto.nome == 'Esporte'):

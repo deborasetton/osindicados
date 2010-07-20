@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.conf.urls.defaults import *
-from osindicados.jogo.models import Tema
-from osindicados.jogo.models import Pergunta
+from django.conf.urls.defaults import patterns
 
 urlpatterns = patterns('osindicados.jogo.views',
   (r'^$', 'index'),
@@ -14,4 +12,6 @@ urlpatterns = patterns('osindicados.jogo.views',
   (r'^ajudaElimina/$', 'ajudaElimina'),
   (r'^ajudaTempo/$', 'ajudaTempo'),
   (r'^horario/$', 'horario'),
+  (r'^entrarRanking/$', 'entrarRanking'),
+  (r'^ranking/$', 'ranking'),
 )
