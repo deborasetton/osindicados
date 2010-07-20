@@ -6,6 +6,10 @@
 	
 	<h1>Pergunta:</h1> (faltam {{ respondidas|faltam }} perguntas)
 	
+	Dificuldade: {{ pergunta.dificuldade }} <br/>
+	Tema: {{ pergunta.idAssunto }} <br/>
+	Seu Placar: {{ placar }}
+	
 	<h2>{{ pergunta.enunciado }}</h2>
 	<form method="post" action="../responder/" name="responder_frm" id="responder_frm" onsubmit="$('#hr').get(0).value = new Date().getTime()/1000">
 		{% csrf_token %}
@@ -22,7 +26,8 @@
 	</form>
 	
 		</div>
-	<h1>Tempo</h1>
+		
+		<h1>Tempo</h1>
     <div id="monitor"></div>
     
     <div id="timer"></div>
@@ -31,8 +36,8 @@
     <a href="#" onclick="$('#timer').countdown({until: +30, format: 'S', compact: true, onExpiry: liftOff, onTick: watchCountdown, serverSync: serverTime}); return false;">Iniciar</a>
     <a href="#" onclick="$('#timer').countdown('destroy'); return false;">Destruir</a>
     <a href="#" onclick="$('#timer').countdown('change', {until: (($('#timer').countdown('getTimes'))[6]+30)}); aumentarTempo(); return false;">Aumentar tempo</a>
-    
-	
+    <a href="#" onclick="$('#timer').countdown('pause'); return false;">Pausar</a>
+    <a href="#" onclick="$('#timer').countdown('resume'); return false;">Continuar</a>
 	
 	<h1>Ajudas Dispon&iacute;veis</h1>
 	
