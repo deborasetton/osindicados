@@ -10,7 +10,7 @@ urlpatterns = patterns('',
                        (r'^jogo/', include('osindicados.jogo.urls')),
                        (r'^admin/', include(admin.site.urls)),
                        (r'^osindicadosmedia/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
-                       (r'^$', include(admin.site.urls)),
+                       (r'^$', include('osindicados.jogo.urls')),
                        (r'^backup/', include('osindicados.backup.urls')),
                        (r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name':'admin/login.html'}),
                        )
