@@ -1,3 +1,14 @@
 <h1>Voce ganhou!</h1>
 
-Clique <a href="../config/">aqui</a> para configurar uma nova partida.
+Deseja entrar para o ranking dos Indicados? <br/><br/>
+
+Se sim, insira seu nome aqui: 
+
+<form name="entrarRanking_frm" method="post" action="../entrarRanking/">
+    {% csrf_token %}
+	<input type="text" name="nomeUsuario"/> <br/>
+    <input type="submit" value="Entrar para o ranking!"/>
+</form>
+
+
+Se n&atilde;o, clique <a href="../config/">aqui</a> para voltar &agrave; tela inicial. <br/>
