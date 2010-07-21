@@ -1,12 +1,75 @@
-<form method="POST" name="download">
-	<input type="hidden" name="mode" value="download"/>
-	<input type="submit" value="Download">
-</form>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Administração do Site | Site de administração do Django</title>
+<link rel="stylesheet" type="text/css"
+	href="{% load adminmedia %}{% admin_media_prefix %}css/base.css">
+<link rel="stylesheet" type="text/css"
+	href="{% load adminmedia %}{% admin_media_prefix %}css/dashboard.css">
+</head>
 
+<body class="dashboard">
+	<div id="container">
+	<!-- Header -->
+	<div id="header">
+		<div id="branding">
+		<h1 id="site-name">Os Indicados</h1>
+		</div>
+		<div id="user-tools">Bem vindo<strong></strong>. <a
+			href="/admin/password_change/"> Alterar senha</a> / <a
+			href="/admin/logout/"> Encerrar sessão</a></div>
+	</div>
+	<!-- END Header -->
+	<div class="breadcrumbs"><a href="../admin">
+	Início</a> › Backup
+	</div>
+	<!-- Content -->
+	<div id="content" class="colMS">
 
-<form method="POST" name="upload" enctype="multipart/form-data">
-	<input type="hidden" name="mode" value="upload"/>
-	<input type="file" name="file">
-	<input type="submit" value="Upload">
-</form>
+		<h1>Administração de Backup</h1>
 
+		<div id="content-main">
+		<div class="module">
+		<table width="100%">
+			<caption><a class="section">GERAR Backup do Banco de
+			Dados</a></caption>
+			<tbody>
+				<tr>
+					<td> Clique no botão abaixo para realizar backup do banco de dados e <br/> fazer download do arquivo correspondente</td>
+				</tr>
+
+				<tr>
+					<td>
+					<form method="POST" name="download"><input type="hidden"
+						name="mode" value="download" /> <input type="submit"
+						value="Download"></form>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+
+		<div class="module">
+		<table width="100%">
+			<caption><a class="section">RECUPERAR Backup do Banco de
+			Dados</a></caption>
+			<tbody>
+				<tr>
+					<td><a>RECUPERAR um backup, através de um arquivo gerado previamente</a></td>
+				</tr>
+				<tr>
+					<td>
+						<form method="POST" name="upload" enctype="multipart/form-data">
+							<input type="hidden" name="mode" value="upload" />
+							<input type="file" name="file">
+							<input type="submit" value="Upload">
+						</form>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+		</div>
+	</div>
+	<!-- END Content -->
+	</div>
+</body>

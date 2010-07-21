@@ -1,22 +1,26 @@
 # -*- coding: utf-8 -*-
+from django import forms
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
-from django.utils.datetime_safe import strftime
 from django.views.decorators.csrf import csrf_exempt
 from subprocess import PIPE, Popen
 import datetime
 import os
+
+class UploadFileForm(forms.Form):
+    file  = forms.FileField()
 
 @login_required
 @csrf_exempt
 def index(request):
     # tela de opções
     if request.method == 'GET':
+        form_up = UploadFileForm()
         #form_up = UploadFileForm(request.POST, request.FILES)
-        #return render_to_response('backup/index.html', {'form_up': form_up})
-        return render_to_response('backup/index.html')
+        return render_to_response('backup/index.html', {'form_up': form_up})
+        #return render_to_response('backup/index.html')
     if request.method == 'POST':
         # opção selecionada = download do banco
         if request.POST['mode'] == 'download':
@@ -29,31 +33,36 @@ def index(request):
             return response
         # opcao selecionada = upload do banco
         if request.POST['mode'] == 'upload':
-            #faz backup de segurança do banco
-            saida = Popen(['python', 'manage.py', 'dumpdata'], stdout=PIPE).communicate()[0]
-            security_backup = open('backup\\backup_data\\' + 'security_backup.json', 'wb+')
-            security_backup.write(saida)
-            security_backup.close()
-            #guarda arquivo recebido
-            f = request.FILES['file']
-            destination = open('backup\\backup_data\\' + f.name, 'wb+')
-            print destination.name
-            for chunk in f.chunks():
-                destination.write(chunk)
-            destination.close()
-            #limpa o banco
-            Popen(['python', 'manage.py', 'flush', '--noinput'], stdout=PIPE).communicate()
-            #recupera backup usando o arquivo recebido
-            saida = Popen(['python', 'manage.py', 'loaddata', destination.name], stdout=PIPE).communicate()
-            #deleta arquivo
-            os.remove(destination.name)
-            # verifica se a recuperacao eh valida (verifica se existe pelo menos um usuario cadastrado no sistema
-            if len(User.objects.all()) > 0:
-                #reguperacao valida
-                return HttpResponse('Upload realizado com sucesso! saida:' + saida[0])
-            else:
-                # não foi possivel realizar loaddata.
-                #recupera estado anterior
+            form_up = UploadFileForm(request.POST, request.FILES)
+            if form_up.is_valid():
+                #faz backup de segurança do banco
+                saida = Popen(['python', 'manage.py', 'dumpdata'], stdout=PIPE).communicate()[0]
+                security_backup = open('backup\\backup_data\\' + 'security_backup.json', 'wb+')
+                security_backup.write(saida)
+                security_backup.close()
+                #guarda arquivo recebido
+                f = request.FILES['file']
+                destination = open('backup\\backup_data\\' + f.name, 'wb+')
+                print destination.name
+                for chunk in f.chunks():
+                    destination.write(chunk)
+                destination.close()
+                #limpa o banco
                 Popen(['python', 'manage.py', 'flush', '--noinput'], stdout=PIPE).communicate()
-                Popen(['python', 'manage.py', 'loaddata', security_backup.name], stdout=PIPE).communicate()
-                return HttpResponse('ERRO AO REALIZAR UPLOAD, nenhuma alteracao foi realizada. Verifique se o arquivo selecionado corresponde a um backup feito anteriormente')
+                #recupera backup usando o arquivo recebido
+                saida = Popen(['python', 'manage.py', 'loaddata', destination.name], stdout=PIPE).communicate()
+                #deleta arquivo
+                os.remove(destination.name)
+                # verifica se a recuperacao eh valida (verifica se existe pelo menos um usuario cadastrado no sistema
+                if len(User.objects.all()) > 0:
+                    #reguperacao valida
+                    return HttpResponse('Upload realizado com sucesso! saida:' + saida[0])
+                else:
+                    # não foi possivel realizar loaddata.
+                    #recupera estado anterior
+                    Popen(['python', 'manage.py', 'flush', '--noinput'], stdout=PIPE).communicate()
+                    Popen(['python', 'manage.py', 'loaddata', security_backup.name], stdout=PIPE).communicate()
+                    return HttpResponse('ERRO AO REALIZAR UPLOAD, nenhuma alteracao foi realizada. Verifique se o arquivo selecionado corresponde a um backup feito anteriormente')
+            else:
+                print "form invalido"
+                return render_to_response('backup/index.html', {'form_up': form_up})
