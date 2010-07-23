@@ -3,12 +3,15 @@
 import random
 from osindicados.jogo.models import Tema, Pergunta, Placar
 from osindicados.jogo.partidaconfs import *
-from osindicados.jogo.utils import sortearAlternativas
+from osindicados.jogo.utils import sortearAlternativas, selectPlacares
 from django.shortcuts import render_to_response
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 import time
+from django.contrib.sessions.models import Session
+from applib.misc import existing
+from genericpath import exists
 
 def index(request):
     temas = Tema.objects.all()
@@ -271,7 +274,23 @@ def entrarRanking(request):
     return HttpResponseRedirect(reverse('osindicados.jogo.views.ranking'))
 
 def ranking(request):
-    return HttpResponse("Tela de Ranking!")
+    temas = Tema.objects.all()
+    
+    #Se o usuário configurou uma partida exibe o ranking pelos temas
+    if 'confs' in request.session:
+        
+        # Se o usuário está solicitando uma filtragem de dados substitui os temas
+        if request.method=='POST':
+            request.session['confs'].temas=request.POST.getlist('temasSelecionados')
+
+        return render_to_response('jogo/ranking.html', {'placares' : selectPlacares(request.session['confs'].temas), 'temas' : temas}, context_instance=RequestContext(request))
+    
+    #Caso o usuário não tenha configurado uma partida exibe o ranking geral
+    else:
+        listaDeTemas = []
+        for t in temas:
+            listaDeTemas.append(t.nome)
+        return render_to_response('jogo/ranking.html', {'placares' : selectPlacares(listaDeTemas), 'temas' : temas}, context_instance=RequestContext(request))
 
 ########################### Funções auxiliares ##############################
 

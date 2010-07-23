@@ -1,0 +1,39 @@
+{% extends "jogo/base.html" %}
+
+{% block content %}
+	<h1>Tela de Ranking</h1>
+	    <table border=1>
+	    	<tr>
+	    		<td>Nome</td>
+				<td>Dificuldade</td>
+				<td>Esportes</td>
+				<td>Cinema</td>
+				<td>Musica</td>
+				<td>Televisao</td>
+				<td>Conhecimentos Gerais</td>
+				<td>Ciencias</td>
+	    	</tr>
+			{% for p in placares %}
+			<tr>
+				<td>{{p.nomeJogador}}</td>
+				<td>{{p.dificuldade}}</td>
+				<td>{{p.acertosEsporte}}</td>
+				<td>{{p.acertosCinema}}</td>
+				<td>{{p.acertosMusica}}</td>
+				<td>{{p.acertosTelevisao}}</td>
+				<td>{{p.acertosCGerais}}</td>
+				<td>{{p.acertosCiencias}}</td>
+			</tr>
+			{% endfor %}
+	    </table>
+    <h2>Filtros</h2>
+	<form action="../ranking/" name="temas_frm" id="temas_fmr" method="post">
+		{% csrf_token %}
+		{% for t in temas %}
+		  <input type="checkbox" name="temasSelecionados" value="{{t.nome}}">{{t.nome}}<BR> 
+    	{% endfor %}
+	<input type="submit" value="Aplicar Filtros">
+	
+	<br><br>
+	<a href="../config">Voltar para a tela de configuracao</a>
+{% endblock content %}
