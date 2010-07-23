@@ -1,17 +1,22 @@
 # -*- coding: utf-8 -*-
 
-import random
-from osindicados.jogo.models import Tema, Pergunta, Placar
-from osindicados.jogo.partidaconfs import *
-from osindicados.jogo.utils import sortearAlternativas, selectPlacares
-from django.shortcuts import render_to_response
+from django.contrib.sessions.models import Session
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import render_to_response, render_to_response
 from django.template import RequestContext
-import time
-from django.contrib.sessions.models import Session
-from applib.misc import existing
 from genericpath import exists
+from osindicados.jogo.models import Tema, Pergunta, DIFICULDADES, Tema, Pergunta, \
+    Placar
+from osindicados.jogo.partidaconfs import *
+from osindicados.jogo.utils import sortearAlternativas, sortearAlternativas, \
+    selectPlacares
+import random
+import random
+import time
+from ctypes.wintypes import INT
+
+
 
 def index(request):
     temas = Tema.objects.all()
@@ -66,22 +71,38 @@ def partida(request):
         return HttpResponse("Vc ainda nao configurou sua partida.")
 
 def config(request):
-    # Mock para as opções do usuário
-    dificuldade = 2
-    temas = ['Ciências', 'Música']
-    # Cria um novo objeto passando as opções do usuário
-    conf = Partidaconfs(dificuldade, temas)
-    # Coloca na sessão
-    request.session.clear()
-    request.session['confs'] = conf
-    
-    # Inicializa as ajudas. Só um mock por enquanto
-    ajudas = {'troca' : 3, 'elimina' : 3, 'tempo' : 3}
-    request.session['ajudas'] = ajudas
-    placar = Placar()
-    request.session['placar'] = placar
-    
-    return render_to_response('jogo/config.html')
+    """
+    Configurações do jogo, é a tela inicial do sistema inteiro 
+    O request deve conter o tema e a dificuldade
+    """
+    if 'tema' and 'dificuldade' in request.POST:
+        # Cria um novo objeto passando as opções do usuário
+        conf = Partidaconfs(request.POST['dificuldade'], request.POST.getlist('temas'))
+        
+        print request.POST.getlist('temas')
+        # Coloca na sessão
+        request.session.clear()
+        request.session['confs'] = conf
+        
+        # Inicializa as ajudas de acordo com a dificuldade
+        # são três para o nível amador(1), duas para profissional(2), uma para celebridade(3) e nenhuma vez para ídolo(4)
+        numajudas = 3 #amador
+        if request.POST['dificuldade'] == '4': 
+            numajudas = 0 # ídolo
+        if request.POST['dificuldade'] == '3': 
+            numajudas = 1 # celebridade
+        if request.POST['dificuldade'] == '2':
+            numajudas = 2 # profissional
+        ajudas = {'troca' : numajudas, 'elimina' : numajudas, 'tempo' : numajudas}
+        request.session['ajudas'] = ajudas
+        
+        # Inicializa Placar()     
+        placar = Placar()
+        request.session['placar'] = placar
+                
+        return HttpResponseRedirect(reverse('osindicados.jogo.views.partida'))            
+    else:
+        return render_to_response('jogo/config.html', {'dificuldades': DIFICULDADES, 'temas' : Tema.objects.all() }, context_instance=RequestContext(request))
 
 def responder(request):
     """
