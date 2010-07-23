@@ -1,4 +1,26 @@
-<h1>Configuracoes efetuadas com sucesso! Prossiga! </h1>
+{% extends "jogo/base.html" %} {% block content %}
+<h1>Os indicados</h1>
+
+<form action="../config/" method="post">
+{% csrf_token %}
+
+	{% for tema in temas %}
+	<input type="checkbox" name="temas" value="{{ tema }}" /> {{ tema }}<br />	
+	{% endfor %} <br>
+	
+    <select name='dificuldade'>
+	   {% for n, v in dificuldades %}
+        <option value="{{ n }}">{{ v }}</option>
+        {% endfor %}
+    </select><br> 
+    
+    <input type="submit" value="Iniciar Partida">
+</form>
+
+<a href="../ranking/">Ver Ranking</a><br>
+<a href="../comojogar/">Como Jogar</a><br>
+{% endblock content %}
 
 Clique <a href="../partida/">aqui</a> para prosseguir.<br>
 Clique <a href="../ranking">aqui</a> para ir para o ranking.<br>
+
