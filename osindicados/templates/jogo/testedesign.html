@@ -1,0 +1,32 @@
+{% extends "jogo/basedesign.html" %}
+
+{% block extrahead %}
+	<script type="text/javascript">
+		$(function() {
+			$(".check").button();
+			$("button, input:submit, a", ".demo").button();
+		});
+	</script>
+
+{% endblock %}
+
+<!-- exemplo de tela -->
+{% block tela %}
+	<h2>tela fake</h2>
+{% endblock %}
+
+<!-- exemplo de checkbox com jquery -->
+{% block sidebar %}
+
+	<input type="checkbox" id="check1" class="check"/><label for="check1">Esportes</label>
+	<input type="checkbox" id="check2" class="check"/><label for="check2">Musica</label>
+	<input type="checkbox" id="check3" class="check"/><label for="check3">Televisao</label>
+
+{% endblock %}
+
+<!-- exemplo de botao-->
+{% block footer %}
+<div class="demo">
+	<input type="submit" value="Jogar">
+</div>
+{% endblock %}

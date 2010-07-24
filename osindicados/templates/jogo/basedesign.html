@@ -1,0 +1,27 @@
+<html>
+<head>
+    <script type="text/javascript" src="/osindicadosmedia/js/jquery-1.4.2.min.js"></script>
+    <link rel="stylesheet" href="/osindicadosmedia/css/base.css" />
+	<script type="text/javascript" src="/osindicadosmedia/js/jquery-ui-1.8.2.custom.min.js"></script>
+    <link rel="stylesheet" href="/osindicadosmedia/css/jquery-ui-1.8.2.custom.css" />
+
+
+    {% block extrahead %}{% endblock %}
+    <title>Os Indicados</title>
+</head>
+
+<body>
+	<div id="background">
+	    <div id="tela">
+	        {% block tela %}{% endblock %}
+	    </div>
+	    <div id="sidebar">
+	    	{% block sidebar %}{% endblock %}
+	    </div>
+	    <div id="footer">
+	    	{% block footer %}{% endblock %}
+	    </div>
+    </div>
+</body>
+</html>
+
