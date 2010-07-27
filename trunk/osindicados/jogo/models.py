@@ -55,13 +55,19 @@ class Placar(models.Model):
 
     def __init__(self, *args, **kwargs):
         super(Placar, self).__init__(*args, **kwargs)
-        self.acertosEsporte = 0
-        self.acertosCinema = 0
-        self.acertosMusica = 0
-        self.acertosTelevisao = 0
-        self.acertosCGerais = 0
-        self.acertosCiencias = 0
-
+        if self.acertosEsporte is None:
+            self.acertosEsporte = 0
+        if self.acertosCinema is None:
+            self.acertosCinema = 0
+        if self.acertosMusica is None:
+            self.acertosMusica = 0
+        if self.acertosTelevisao is None:
+            self.acertosTelevisao = 0
+        if self.acertosCGerais is None:
+            self.acertosCGerais = 0
+        if self.acertosCiencias is None:
+            self.acertosCiencias = 0
+        
     nomeJogador = models.CharField(max_length=30)
     dificuldade = models.IntegerField(choices=DIFICULDADES)
     acertosEsporte = models.IntegerField()
