@@ -1,6 +1,30 @@
 {% extends "jogo/base.html" %} 
 {% block tela %}
 <h1>Os indicados</h1>
+<script language="javascript" type="text/javascript">
+<!--
+i = 0;
+dificuldade = [
+{% for n, v in dificuldades %}
+'{{ v }}',       
+{% endfor %}
+]
+
+function selectDifi(option) {
+    if(option == 'left') {
+        if(i == 0) i = 3;
+        else i--;
+        document.getElementById('listdificuldades').value = dificuldade[i];
+        document.getElementById('dificuldade').value = '' + i + 1;
+    } else {
+        document.getElementById('listdificuldades').value = dificuldade[i];
+        document.getElementById('dificuldade').value = '' + i + 1;
+        i = (++i)%4;    
+    }
+    
+}
+// -->
+</script>
 
 <form action="../config/" method="post">
 {% csrf_token %}
@@ -9,12 +33,12 @@
 	<input type="checkbox" name="temas" value="{{ tema }}" /> {{ tema }}<br />	
 	{% endfor %} <br>
 	
-    <select name='dificuldade'>
-	   {% for n, v in dificuldades %}
-        <option value="{{ n }}">{{ v }}</option>
-        {% endfor %}
-    </select><br> 
+	<div id="lefclick" onclick="javascript: selectDifi('left');"> &lt;-- </div>   
+	
+    <input type="text" name="listdificuldades" value="dificuldade" id="listdificuldades"/>
+    <div id="rightclick" onclick="javascript: selectDifi('right');"> --&gt; </div> 
     
+    <input type="hidden" name="dificuldade" value='0' id="dificuldade"/>
     <input type="submit" value="Iniciar Partida">
 </form>
 
