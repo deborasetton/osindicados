@@ -14,7 +14,7 @@
 		<div id="branding">
 		<h1 id="site-name">Os Indicados</h1>
 		</div>
-		<div id="user-tools">Bem vindo<strong></strong>. <a
+		<div id="user-tools">Bem vindo, <strong>{% filter force_escape %}{% firstof user.first_name user.username %}{% endfilter %}</strong>. <a
 			href="/admin/password_change/"> Alterar senha</a> / <a
 			href="/admin/logout/"> Encerrar sessão</a></div>
 	</div>
@@ -60,11 +60,16 @@
 					<td>
 						<form method="POST" name="upload" enctype="multipart/form-data">
 							<input type="hidden" name="mode" value="upload" />
-							<input type="file" name="file">
+							<input type="file" name="file"  size="55" style="width: 420px; cursor: pointer; position: relative;">
 							<input type="submit" value="Upload">
 						</form>
 					</td>
 				</tr>
+				{% if mensagem_err %}
+				<tr>
+					<td>{{mensagem_err}}</td>
+				</tr>
+				{% endif %}
 			</tbody>
 		</table>
 		</div>

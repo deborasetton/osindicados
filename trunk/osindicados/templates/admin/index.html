@@ -12,7 +12,7 @@
 
 {% block content %}
 <div id="content-main">
-	<div class="module">
+<div class="module">
 		<table width="100%">
         <caption><a href="../backup" class="section">Backup do Banco de Dados</a></caption>
         <tbody><tr>
@@ -20,12 +20,13 @@
 	           </tr>
 	    </tbody>
 	    </table>
-	</div>
+</div>
 {% if app_list %}
     {% for app in app_list %}
+    	{% ifnotequal app.app_url 'auth/'%}
         <div class="module">
         <table summary="{% blocktrans with app.name as name %}Models available in the {{ name }} application.{% endblocktrans %}">
-        <caption><a href="{{ app.app_url }}" class="section">{% blocktrans with app.name as name %}{{ name }}{% endblocktrans %}</a></caption>
+        <caption><a class="section">{% blocktrans with app.name as name %}{{ name }}{% endblocktrans %}</a></caption>
         {% for model in app.models %}
             <tr>
             {% if model.perms.change %}
@@ -49,6 +50,7 @@
         {% endfor %}
         </table>
         </div>
+        {%endifnotequal%}
     {% endfor %}
 {% else %}
     <p>{% trans "You don't have permission to edit anything." %}</p>
