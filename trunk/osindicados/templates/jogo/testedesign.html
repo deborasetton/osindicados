@@ -1,12 +1,17 @@
 {% extends "jogo/basedesign.html" %}
 
 {% block extrahead %}
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<script type="text/javascript">
 		$(function() {
-			$(".check").button();
+			$(".check").button({
+	            icons: {
+                primary: 'ui-icon-circle-check'}
+            });
 			$("button, input:submit, a", ".demo").button();
 		});
 	</script>
+
 
 {% endblock %}
 
@@ -17,11 +22,15 @@
 
 <!-- exemplo de checkbox com jquery -->
 {% block sidebar %}
-
-	<input type="checkbox" id="check1" class="check"/><label for="check1">Esportes</label>
-	<input type="checkbox" id="check2" class="check"/><label for="check2">Musica</label>
-	<input type="checkbox" id="check3" class="check"/><label for="check3">Televisao</label>
-
+	<table style="font-size: small;" align="center">
+	<tr><td>
+		<input type="checkbox" id="check1" class="check"/><label for="check1">Esportes</label><br/>
+	</td></tr><tr><td>
+		<input type="checkbox" id="check2" class="check"/><label for="check2">Música</label><br/>
+	</td></tr><tr><td>
+		<input type="checkbox" id="check3" class="check"/><label for="check3">Televisão</label><br/>
+	</td></tr>
+	</table>
 {% endblock %}
 
 <!-- exemplo de botao-->
