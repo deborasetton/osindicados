@@ -19,7 +19,7 @@ def index(request):
     if request.method == 'GET':
         form_up = UploadFileForm()
         #form_up = UploadFileForm(request.POST, request.FILES)
-        return render_to_response('backup/index.html', {'form_up': form_up})
+        return render_to_response('backup/index.html', {'form_up': form_up, 'user': request.user})
         #return render_to_response('backup/index.html')
     if request.method == 'POST':
         # opção selecionada = download do banco
@@ -27,7 +27,7 @@ def index(request):
             now =  datetime.datetime.now()
             nome = 'banco_osindicados_' + now.strftime("%Y-%m-%d_%Hh%Mm%Ss") +'.json'
             print os.listdir('.')
-            saida = Popen(['python', 'manage.py', 'dumpdata'], stdout=PIPE).communicate()[0]
+            saida = Popen(['python', 'manage.py', 'dumpdata', '--natural'], stdout=PIPE).communicate()[0]
             response = HttpResponse(saida, mimetype='application/octet-stream')
             response['Content-Disposition'] = 'attachment; filename=' + nome
             return response
@@ -36,7 +36,7 @@ def index(request):
             form_up = UploadFileForm(request.POST, request.FILES)
             if form_up.is_valid():
                 #faz backup de segurança do banco
-                saida = Popen(['python', 'manage.py', 'dumpdata'], stdout=PIPE).communicate()[0]
+                saida = Popen(['python', 'manage.py', 'dumpdata', '--natural'], stdout=PIPE).communicate()[0]
                 security_backup = open('backup\\backup_data\\' + 'security_backup.json', 'wb+')
                 security_backup.write(saida)
                 security_backup.close()
@@ -60,9 +60,10 @@ def index(request):
                 else:
                     # não foi possivel realizar loaddata.
                     #recupera estado anterior
+                    print "recuperando backup de seguranca"
                     Popen(['python', 'manage.py', 'flush', '--noinput'], stdout=PIPE).communicate()
                     Popen(['python', 'manage.py', 'loaddata', security_backup.name], stdout=PIPE).communicate()
-                    return HttpResponse('ERRO AO REALIZAR UPLOAD, nenhuma alteracao foi realizada. Verifique se o arquivo selecionado corresponde a um backup feito anteriormente')
+                    return render_to_response('backup/index.html', {'form_up': form_up, 'mensagem_err': 'ERRO AO REALIZAR UPLOAD, nenhuma alteracao foi realizada. Verifique se o arquivo selecionado corresponde a um backup feito anteriormente'})
             else:
-                print "form invalido"
-                return render_to_response('backup/index.html', {'form_up': form_up})
+                # form invlido
+                return render_to_response('backup/index.html', {'form_up': form_up, 'mensagem_err': "Escolha um arquivo no seu computador antes de clicar em 'Upload'"})
