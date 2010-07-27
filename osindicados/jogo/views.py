@@ -1,20 +1,15 @@
 # -*- coding: utf-8 -*-
 
-from django.contrib.sessions.models import Session
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render_to_response, render_to_response
+from django.shortcuts import render_to_response
 from django.template import RequestContext
-from genericpath import exists
-from osindicados.jogo.models import Tema, Pergunta, DIFICULDADES, Tema, Pergunta, \
+from osindicados.jogo.models import DIFICULDADES, Tema, Pergunta, \
     Placar
 from osindicados.jogo.partidaconfs import *
-from osindicados.jogo.utils import sortearAlternativas, sortearAlternativas, \
-    selectPlacares
-import random
-import random
+from osindicados.jogo.utils import sortearAlternativas, selectPlacares
 import time
-from ctypes.wintypes import INT
+import random
 
 
 
@@ -110,26 +105,26 @@ def responder(request):
     O request deve conter a resposta dada pelo usuário e o id da pergunta.
     """
     # Verificacao de tempo
-#    horarioInicio = float(request.session['hr_inicio']) # Horario em que o timer foi iniciado
-#    horarioFim = float(request.POST['hr']) # Horario em que o form foi submetido
-#
-#    if 'hr_extensao' in request.session:
-#        # Se houve extensao, o usuario teve 60 segundos para responder
-#        horarioFimTeorico = horarioInicio + 60
-#        del request.session['hr_extensao']
-#        del request.session['hr_inicio']
-#    else:
-#        # Se nao houve extensao, o usuario teve so 30 segundos para responder
-#        horarioFimTeorico = horarioInicio + 30
-#
-#    # Informacao de debug
-#    print (horarioFim - horarioInicio)
-#    print (horarioFim - horarioFimTeorico)
-#
-#    # Tolerancia maxima de 1 segundo de diferenca entre o esperado e o real
-#    if (horarioFim - horarioFimTeorico) > 1:
-#        request.session.clear()
-#        return HttpResponseRedirect(reverse('osindicados.jogo.views.erro'))
+    horarioInicio = float(request.session['hr_inicio']) # Horario em que o timer foi iniciado
+    horarioFim = float(request.POST['hr']) # Horario em que o form foi submetido
+
+    if 'hr_extensao' in request.session:
+        # Se houve extensao, o usuario teve 60 segundos para responder
+        horarioFimTeorico = horarioInicio + 60
+        del request.session['hr_extensao']
+        del request.session['hr_inicio']
+    else:
+        # Se nao houve extensao, o usuario teve so 30 segundos para responder
+        horarioFimTeorico = horarioInicio + 30
+
+    # Informacao de debug
+    print (horarioFim - horarioInicio)
+    print (horarioFim - horarioFimTeorico)
+
+    # Tolerancia maxima de 1 segundo de diferenca entre o esperado e o real
+    if (horarioFim - horarioFimTeorico) > 1:
+        request.session.clear()
+        return HttpResponseRedirect(reverse('osindicados.jogo.views.erro'))
 
     # Passou pela verificacao de tempo. Comeca a logica da resposta.
 

@@ -1,14 +1,10 @@
 {% extends "jogo/base.html" %}
 
-{% block content %}
+{% block tela %}
 	{% load osindicados_filters %}
 		<div id="alternativas">
 	
-	<h1>Pergunta:</h1> (faltam {{ respondidas|faltam }} perguntas)
-	
-	Dificuldade: {{ pergunta.dificuldade }} <br/>
-	Tema: {{ pergunta.idAssunto }} <br/>
-	Seu Placar: {{ placar }}
+	<h1>Pergunta {{ respondidas|add:"1"}}</h1>
 	
 	<h2>{{ pergunta.enunciado }}</h2>
 	<form method="post" action="../responder/" name="responder_frm" id="responder_frm" onsubmit="$('#hr').get(0).value = new Date().getTime()/1000">
@@ -20,34 +16,77 @@
 				{% endif %}<br/></input>
 			{% endfor %}
 		
-		<input type="text" name="perguntaId" value="{{pergunta.id}}"/>
-		<input type="text" name="hr" value="" id="hr"/>
+		<input type="hidden" name="perguntaId" value="{{pergunta.id}}"/>
+		<input type="hidden" name="hr" value="" id="hr"/>
 		<input type="submit" value="responder"/>
 	</form>
 	
 		</div>
 		
-		<h1>Tempo</h1>
-    <div id="monitor"></div>
+	<!-- <h1>Pergunta:</h1> (faltam {{ respondidas|faltam }} perguntas) -->
+    
+    <!-- Dificuldade: {{ pergunta.dificuldade }} <br/> -->
+    
+    
+    <!-- Seu Placar: {{ placar }} -->
+
+    <!-- <h1>Tempo</h1> -->
     
     <div id="timer"></div>
-    <div id="timer2"></div>
     
-    <a href="#" onclick="$('#timer').countdown({until: +30, format: 'S', compact: true, onExpiry: liftOff, onTick: watchCountdown, serverSync: serverTime}); return false;">Iniciar</a>
+    <a href="#" onclick="$('#timer').countdown({until: +30, format: 'S', compact: true, onExpiry: liftOff, serverSync: serverTime}); return false;">Iniciar</a>
     <a href="#" onclick="$('#timer').countdown('destroy'); return false;">Destruir</a>
     <a href="#" onclick="$('#timer').countdown('change', {until: (($('#timer').countdown('getTimes'))[6]+30)}); aumentarTempo(); return false;">Aumentar tempo</a>
     <a href="#" onclick="$('#timer').countdown('pause'); return false;">Pausar</a>
     <a href="#" onclick="$('#timer').countdown('resume'); return false;">Continuar</a>
 	
-	<h1>Ajudas Dispon&iacute;veis</h1>
 	
-	<h2>Troca: {{ ajudas.troca }}</h2>
-	<a href="../ajudaTroca/">Trocar pergunta</a>
-	<h2>Elimina&ccedil;&atilde;o de alternativas: {{ ajudas.elimina }}</h2>
-	{% if not eliminadas %}<a href="#" onclick="ajudaElimina(); return false;">Eliminar duas alternativas incorretas</a> {% endif %}
-	<h2>Extens&atilde;o de tempo: {{ ajudas.tempo }}</h2>
-	<a href="../ajudaTempo/" onclick="alert('Aumentando seu tempo...'); return false;">Aumentar o tempo</a>
+	<div id="placar">
+       	
+       	{% for tema in confs.temas %}
+           {{tema|printTema:placar|safe}}
+        {% endfor %}
+       	
+	</div>
 	
+	<!-- <h1>Ajudas Dispon&iacute;veis</h1> -->
+	<div id="telaFooter">
+		<div id="ajudas">
+			
+			<a href="../ajudaTroca/"><img src="/osindicadosmedia/img/ajuda.png"/></a>
+            {% if not eliminadas %}<a href="#" onclick="ajudaElimina(); return false;"><img src="/osindicadosmedia/img/ajuda.png"/></a> {% endif %}    
+			<a href="../ajudaTempo/" onclick="alert('Aumentando seu tempo...'); return false;"><img src="/osindicadosmedia/img/ajuda.png"/></a>
+			<br/>
+			{{ ajudas.troca|imprimirEstrelas|safe }}
+			{{ ajudas.elimina|imprimirEstrelas|safe }}
+			{{ ajudas.tempo|imprimirEstrelas|safe }}
+			
+			<!--<div id="ajudaTroca">
+				<a href="../ajudaTroca/"><img src="/osindicadosmedia/img/ajuda.png"/></a>
+				<span style="display:none;">{{ajudas.troca}}</span> <br/>
+				{{ ajudas.troca|imprimirEstrelas|safe }}
+			</div>
+			
+			<div id="ajudaTroca">
+				{% if not eliminadas %}<a href="#" onclick="ajudaElimina(); return false;"><img src="/osindicadosmedia/img/ajuda.png"/></a> {% endif %}
+				<br/>{{ ajudas.elimina|imprimirEstrelas|safe }}
+			</div>
+			
+			<div id="ajudaTempo">
+				<a href="../ajudaTempo/" onclick="alert('Aumentando seu tempo...'); return false;"><img src="/osindicadosmedia/img/ajuda.png"/></a>
+				<br/>{{ ajudas.tempo|imprimirEstrelas|safe }}
+			</div>
+			-->
+		</div>
+		
+		<div id="tema">
+            Tema: {{ pergunta.idAssunto.id|getImagem|safe }} <br/>
+        </div>
+	</div>
+	
+{% endblock tela %}
+
+{% block sidebar %}	
 	
 	<h1>Configura&ccedil;&otilde;es</h1>
 	
@@ -55,4 +94,5 @@
 	    <li>Dificuldade: {{ confs.dificuldade }}</li>
 	    <li>Temas: {{ confs.temas }}</li>
 	</ul>
-{% endblock content %}
+	
+{% endblock sidebar %}
