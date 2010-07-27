@@ -67,7 +67,7 @@ class Placar(models.Model):
             self.acertosCGerais = 0
         if self.acertosCiencias is None:
             self.acertosCiencias = 0
-        
+
     nomeJogador = models.CharField(max_length=30)
     dificuldade = models.IntegerField(choices=DIFICULDADES)
     acertosEsporte = models.IntegerField()
