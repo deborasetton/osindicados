@@ -74,7 +74,6 @@ def config(request):
         # Cria um novo objeto passando as opções do usuário
         conf = Partidaconfs(request.POST['dificuldade'], request.POST.getlist('temas'))
 
-        print request.POST.getlist('temas')
         # Coloca na sessão
         request.session.clear()
         request.session['confs'] = conf
