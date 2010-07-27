@@ -56,7 +56,8 @@ def index(request):
                 # verifica se a recuperacao eh valida (verifica se existe pelo menos um usuario cadastrado no sistema
                 if len(User.objects.all()) > 0:
                     #reguperacao valida
-                    return HttpResponse('Upload realizado com sucesso! saida:' + saida[0])
+                    print 'Upload realizado com sucesso! saida:' + saida[0]
+                    return render_to_response('backup/index.html', {'form_up': form_up, 'mensagem_up_ok': 'Backup recuperado com sucesso!'})
                 else:
                     # não foi possivel realizar loaddata.
                     #recupera estado anterior

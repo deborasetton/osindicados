@@ -65,13 +65,15 @@
 						</form>
 					</td>
 				</tr>
-				{% if mensagem_err %}
-				<tr>
-					<td>{{mensagem_err}}</td>
-				</tr>
-				{% endif %}
+
 			</tbody>
 		</table>
+		{% if mensagem_err %}
+		<ul class="errorlist"><li>{{mensagem_err}}</li></ul>
+		{% endif %}
+		{% if mensagem_up_ok %}
+		<ul class="messagelist"><li>{{mensagem_up_ok}}</li></ul>
+		{% endif %}
 		</div>
 		</div>
 	</div>
