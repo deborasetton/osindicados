@@ -37,15 +37,15 @@ function highlightLast5(periods) {
     } 
 } 
 
-// $(document).ready(function() {
-//	$('#timer').countdown({
-//      until: +30, 
-//      format: 'S', 
-//      compact: true, 
-//      onExpiry: liftOff, 
-//      onTick: highlightLast5, 
-//      serverSync: serverTime});
-// });
+ $(document).ready(function() {
+	$('#timer').countdown({
+      until: +30, 
+      format: 'S', 
+      compact: true, 
+      onExpiry: liftOff, 
+      onTick: highlightLast5, 
+      serverSync: serverTime});
+ });
  
  function ajudaElimina() {
     $('#alternativas').load("http://localhost:8000/jogo/ajudaElimina/ #alternativas")

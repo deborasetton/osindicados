@@ -1,0 +1,63 @@
+html{
+    height: 100%;
+    font-family: helvetica, arial;
+    font-size: small;
+    }
+
+#background{
+    position: absolute;
+    left: 10%;
+    /* TODO: Mudar os tamanhos quando mudar a imagem*/
+    width: 1000px;
+    height: 1000px;
+    background-image: url("/osindicadosmedia/img/tv.jpg");
+    background-repeat: no-repeat;
+    }
+
+#tela{
+    position: inherit;
+    top: 100px;
+    left: 100px;
+    width: 650px;
+    height: 520px;
+    border-style: solid;
+    border-width: thin;
+    }
+
+#sidebar{
+    position: inherit;
+    top: 80px;
+    left: 800px;
+    width: 130px;
+    height: 500px;
+    border: medium;
+    border-style: solid;
+    border-width: thin;
+    padding-left: 5px;
+    }
+
+#footer{
+    position: inherit;
+    top: 610px;
+    left: 810px;
+    width: 120px;
+    height: 60px;
+    border: medium;
+    border-style: solid;
+    border-width: thin;
+    }
+    
+#alternativas h2{
+    font-size: 14px;
+}
+
+#placar{
+    color: black;
+    float: right;
+    margin-right: 55px;
+    margin-top: -130px;
+}
+
+#tema{
+    display:inline;
+}
