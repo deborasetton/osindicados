@@ -1,51 +1,76 @@
-{% extends "jogo/base.html" %} 
-{% block tela %}
-<h1>Os indicados</h1>
+{% extends "jogo/basedesign.html" %}
+
+{% block extrahead %}
 <script language="javascript" type="text/javascript">
 <!--
-i = 0;
-dificuldade = [
-{% for n, v in dificuldades %}
-'{{ v }}',       
-{% endfor %}
-]
+	i = 0;
+	dificuldade = [
+	{% for n, v in dificuldades %}
+	'{{ v }}',
+	{% endfor %}
+	]
 
-function selectDifi(option) {
-    if(option == 'left') {
-        if(i == 0) i = 3;
-        else i--;
-        document.getElementById('listdificuldades').value = dificuldade[i];
-        document.getElementById('dificuldade').value = '' + i + 1;
-    } else {
-        document.getElementById('listdificuldades').value = dificuldade[i];
-        document.getElementById('dificuldade').value = '' + i + 1;
-        i = (++i)%4;    
-    }
-    
-}
+	function selectDifi(option) {
+	    if(option == 'left') {
+	        if(i == 0) i = 3;
+	        else i--;
+	        document.getElementById('listdificuldades').value = dificuldade[i];
+	        document.getElementById('dificuldade').value = '' + i + 1;
+	    } else {
+	        document.getElementById('listdificuldades').value = dificuldade[i];
+	        document.getElementById('dificuldade').value = '' + i + 1;
+	        i = (++i)%4;
+	    }
+
+	}
 // -->
 </script>
+
+<script type="text/javascript">
+	$(function() {
+		$(".check").button({
+            icons: {
+               primary: 'ui-icon-circle-check'}
+           });
+		$("button, input:submit, a").button();
+	});
+</script>
+
+{% endblock extrahead%}
+
+{% block tela %}
+<h1 align="center">Os Indicados</h1>
+<p align="center"><img src="/osindicadosmedia/img/logo.png"/></p>
 
 <form action="../config/" method="post">
 {% csrf_token %}
 
-	{% for tema in temas %}
-	<input type="checkbox" name="temas" value="{{ tema }}" /> {{ tema }}<br />	
-	{% endfor %} <br>
-	
-	<div id="lefclick" onclick="javascript: selectDifi('left');"> &lt;-- </div>   
-	
-    <input type="text" name="listdificuldades" value="dificuldade" id="listdificuldades"/>
-    <div id="rightclick" onclick="javascript: selectDifi('right');"> --&gt; </div> 
-    
-    <input type="hidden" name="dificuldade" value='0' id="dificuldade"/>
-    <input type="submit" value="Iniciar Partida">
-</form>
+<table align="center">
+<tr><td><input type="submit" value="Iniciar Partida"></td></tr>
+<tr style="font-size: small;"><td><a href="../ranking/">Ver Ranking</a><br></td><td><a href="../comojogar/">Como Jogar</a><br></td></tr>
+</table>
 
-<a href="../ranking/">Ver Ranking</a><br>
-<a href="../comojogar/">Como Jogar</a><br>
 {% endblock tela %}
 
-Clique <a href="../partida/">aqui</a> para prosseguir.<br>
-Clique <a href="../ranking">aqui</a> para ir para o ranking.<br>
+{% block sidebar %}
+	<table style="font-size: small;" align="center">
+		<tr><td>
+	{% for tema in temas %}
+		<input type="checkbox" name="temas" value="{{tema}}" class="check" id="{{tema}}" /><label for="{{tema}}">{{tema}}</label><br/>
+		</td></tr><tr><td>
+
+	{% endfor %}
+	</td></tr>
+		</table>
+{% endblock sidebar%}
+
+{% block footer %}
+<input type="hidden" name="dificuldade" value='0' id="dificuldade"/>
+<table>
+ <tr><td><div id="lefclick" onclick="javascript: selectDifi('left');"><img src="/osindicadosmedia/img/seta1.png"> </div></td>
+	<td><input type="text" name="listdificuldades" value="Selecione" id="listdificuldades" size="10"/></td>
+    <td><div id="rightclick" onclick="javascript: selectDifi('right');"><img src="/osindicadosmedia/img/seta2.png"> </div></td></tr>
+</table>
+</form>
+{% endblock%}
 
