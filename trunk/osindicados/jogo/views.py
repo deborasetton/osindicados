@@ -10,6 +10,7 @@ from osindicados.jogo.partidaconfs import *
 from osindicados.jogo.utils import sortearAlternativas, selectPlacares
 import time
 import random
+from django.core.context_processors import request
 
 
 
@@ -70,7 +71,8 @@ def config(request):
     Configurações do jogo, é a tela inicial do sistema inteiro
     O request deve conter o tema e a dificuldade
     """
-    if 'tema' and 'dificuldade' in request.POST:
+    if request.POST.getlist('temas') and 'dificuldade' in request.POST:
+        print 'tem tema e dificuldade'
         # Cria um novo objeto passando as opções do usuário
         conf = Partidaconfs(request.POST['dificuldade'], request.POST.getlist('temas'))
 
@@ -95,8 +97,12 @@ def config(request):
         request.session['placar'] = placar
 
         return HttpResponseRedirect(reverse('osindicados.jogo.views.partida'))
-    else:
-        return render_to_response('jogo/config.html', {'dificuldades': DIFICULDADES, 'temas' : Tema.objects.all() }, context_instance=RequestContext(request))
+    if not(request.POST.getlist('temas')) and ('dificuldade' in request.POST):
+        print "nao tem tema, mas tem dificuldade"
+        return render_to_response('jogo/config.html', {'dificuldades': DIFICULDADES, 'temas' : Tema.objects.all(), 'error' : 'Por Favor, escolha um tema' }, context_instance=RequestContext(request))
+    
+    print "não tem nada!"
+    return render_to_response('jogo/config.html', {'dificuldades': DIFICULDADES, 'temas' : Tema.objects.all() }, context_instance=RequestContext(request))
 
 def responder(request):
     """
@@ -144,7 +150,7 @@ def responder(request):
 
         if pergunta.altCorreta == altSelecionada:
             if int(request.session['respondidas']) == 4:
-                # Respondeu a ultima pergunta corretamente. Fim de jogo.
+                # Respondeu a ultima pergunta corretamente. Fim de jogo.quer
                 # Atualiza o placar antes.
                 request.session['placar'] = incrementarPlacar(request.session['placar'], pergunta)
                 return HttpResponseRedirect(reverse('osindicados.jogo.views.ganhou'))
