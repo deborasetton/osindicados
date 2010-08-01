@@ -41,7 +41,7 @@
 {% block tela %}
 <h1 align="center">Os Indicados</h1>
 <p align="center"><img src="/osindicadosmedia/img/logo.png"/></p>
-
+<div id="erro" style="color: red">{{error}}</div>
 <form action="../config/" method="post">
 {% csrf_token %}
 
