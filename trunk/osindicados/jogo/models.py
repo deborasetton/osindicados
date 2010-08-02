@@ -30,7 +30,7 @@ class Pergunta(models.Model):
     altIncorreta2 = models.CharField(max_length=200)
     altIncorreta3 = models.CharField(max_length=200)
     altIncorreta4 = models.CharField(max_length=200)
-    dificuldade = models.IntegerField(choices=DIFICULDADES)
+    dificuldade = models.IntegerField(choices=DIFICULDADES, null=True)
     idAssunto = models.ForeignKey(Tema)
     def __unicode__(self):
         return self.enunciado
