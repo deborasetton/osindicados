@@ -1,17 +1,39 @@
-{% extends "jogo/base.html" %}
+{% extends "jogo/basedesign.html" %}
 
-{% block content %}
-	<h1>Tela de Ranking</h1>
-	    <table border=1>
+{% block extrahead %}
+
+<script type="text/javascript">
+    $(function() {
+        $(".check").button({
+            icons: {
+               primary: 'ui-icon-circle-check'}
+           });
+        $("button, input:submit, a").button();
+    });
+</script>
+
+{% endblock extrahead %}
+
+{% block tela %}
+	<h1 align="center">Ranking</h1>
+	    <table width="600" border=2 style="table-layout:fixed;" align="center">
+            <col width="14.5%">
+            <col width="15.5%">
+            <col width="11;6%">
+            <col width="11.6%">
+            <col width="11.6%">
+            <col width="11.6%">
+            <col width="11.6%">
+            <col width="11.6%">
 	    	<tr>
-	    		<td>Nome</td>
-				<td>Dificuldade</td>
-				<td>Esportes</td>
-				<td>Cinema</td>
-				<td>Musica</td>
-				<td>Televisao</td>
-				<td>Conhecimentos Gerais</td>
-				<td>Ciencias</td>
+	    		<td align="center">Nome</td>
+				<td align="center">Dificuldade</td>
+				<td align="center"><img src="/osindicadosmedia/img/vuvuzelaouro.png"></td>
+			    <td align="center"><img src="/osindicadosmedia/img/oscar.png"></td>
+                <td align="center"><img src="/osindicadosmedia/img/grammy.png"></td>
+				<td align="center"><img src="/osindicadosmedia/img/emmy.png"></td>
+				<td align="center"><img src="/osindicadosmedia/img/diploma.png"></td>
+				<td align="center"><img src="/osindicadosmedia/img/nobel.png"></td>
 	    	</tr>
 			{% for p in placares %}
 			<tr>
@@ -26,14 +48,27 @@
 			</tr>
 			{% endfor %}
 	    </table>
+			   
+    <br><br>
+	<div align="center">
+    <a href="../config">Voltar para Configurar Partida</a>
+	</div>
+{% endblock tela %}
+{% block sidebar %}
+<form action="../ranking/" name="temas_form" id="temas_form" method="post">
+    <table style="font-size: small;" align="center">
+    <tr><td>
     <h2>Filtros</h2>
-	<form action="../ranking/" name="temas_frm" id="temas_fmr" method="post">
+	   </td></tr><tr><td>
 		{% csrf_token %}
 		{% for t in temas %}
-		  <input type="checkbox" name="temasSelecionados" value="{{t.nome}}">{{t.nome}}<BR> 
+		  <input type="checkbox" name="temasSelecionados" value="{{t.nome}}" id="{{t.nome}}" class="check"/><label for="{{t.nome}}">{{t.nome}}</label></br>
+		  </td></tr><tr><td>
     	{% endfor %}
-	<input type="submit" value="Aplicar Filtros">
-	
-	<br><br>
-	<a href="../config">Voltar para a tela de configuracao</a>
-{% endblock content %}
+		</br></br>
+    <input type="submit" value="Aplicar Filtros">
+    </td></tr>
+	</table>
+</form>
+
+{% endblock sidebar %}
