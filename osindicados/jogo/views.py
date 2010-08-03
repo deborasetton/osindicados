@@ -13,6 +13,7 @@ import random
 from django.core.context_processors import request
 
 
+temasjogo = ['Esporte', 'Cinema', 'Música', 'Conhecimentos Gerais', 'Ciências']
 
 def index(request):
     temas = Tema.objects.all()
@@ -32,7 +33,7 @@ def partida(request):
     # Testa se já existe uma pergunta sendo respondida. Se houver, continua com a mesma. Assim, caso o usuário
     # atualize a página, ele não "ganha" uma ajuda de troca de graça.
     if 'pergunta' in request.session:
-        return render_to_response('jogo/partida.html', {'confs': request.session['confs'], 'pergunta' : request.session['pergunta'], 'alternativas' : request.session.get('alternativas'), 'respondidas' : request.session.get('respondidas'), 'ajudas' : request.session.get('ajudas'), 'eliminadas' : request.session.get('eliminadas'), 'placar' : request.session.get('placar')}, context_instance=RequestContext(request))
+        return render_to_response('jogo/partida.html', {'confs': request.session['confs'], 'pergunta' : request.session['pergunta'], 'alternativas' : request.session.get('alternativas'), 'respondidas' : request.session.get('respondidas'), 'ajudas' : request.session.get('ajudas'), 'eliminadas' : request.session.get('eliminadas'), 'placar' : request.session.get('placar'), 'temasjogo' : temasjogo}, context_instance=RequestContext(request))
 
     # Testa se o usuário já passou pela tela de configuração. Se não passou, mostra mensagem de erro.
     if 'confs' in request.session:

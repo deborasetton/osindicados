@@ -4,8 +4,8 @@
 	{% load osindicados_filters %}
 		<div id="alternativas">
 	
-	<h1>Pergunta {{ respondidas|add:"1"}}</h1>
-	
+	<h1 style="text-align: center;">Pergunta {{ respondidas|add:"1"}}/25 (tema: {{ pergunta.idAssunto.id|getImagem|safe }})</h1>
+	<br/>
 	<h2>{{ pergunta.enunciado }}</h2>
 	<form method="post" action="../responder/" name="responder_frm" id="responder_frm" onsubmit="$('#hr').get(0).value = new Date().getTime()/1000">
 		{% csrf_token %}
@@ -18,7 +18,7 @@
 		
 		<input type="hidden" name="perguntaId" value="{{pergunta.id}}"/>
 		<input type="hidden" name="hr" value="" id="hr"/>
-		<input type="submit" value="responder"/>
+		<p style="text-align: center;"><input type="submit" value="responder" style="text-align: center;"/></p>
 	</form>
 	
 		</div>
@@ -32,13 +32,16 @@
 
     <!-- <h1>Tempo</h1> -->
     
-    <div id="timer"></div>
+    <div id="timer" onmouseover="$('#timeroptions').show();" onmouseout="$('#timeroptions').hide();" style="text-align: center;"></div>
     
-    <a href="#" onclick="$('#timer').countdown({until: +30, format: 'S', compact: true, onExpiry: liftOff, serverSync: serverTime}); return false;">Iniciar</a>
-    <a href="#" onclick="$('#timer').countdown('destroy'); return false;">Destruir</a>
-    <a href="#" onclick="$('#timer').countdown('change', {until: (($('#timer').countdown('getTimes'))[6]+30)}); aumentarTempo(); return false;">Aumentar tempo</a>
-    <a href="#" onclick="$('#timer').countdown('pause'); return false;">Pausar</a>
-    <a href="#" onclick="$('#timer').countdown('resume'); return false;">Continuar</a>
+    <div id="timeroptions" style="display: none;">
+	    <a href="#" onclick="$('#timer').countdown({until: +30, format: 'S', compact: true, onExpiry: liftOff, serverSync: serverTime}); return false;">Iniciar</a>
+	    <a href="#" onclick="$('#timer').countdown('destroy'); return false;">Destruir</a>
+	    <a href="#" onclick="$('#timer').countdown('change', {until: (($('#timer').countdown('getTimes'))[6]+30)}); aumentarTempo(); return false;">Aumentar tempo</a>
+	    <a href="#" onclick="$('#timer').countdown('pause'); return false;">Pausar</a>
+	    <a href="#" onclick="$('#timer').countdown('resume'); return false;">Continuar</a>
+    </div>
+    
 	
 	
 	<div id="placar">
@@ -50,15 +53,16 @@
 	</div>
 	
 	<!-- <h1>Ajudas Dispon&iacute;veis</h1> -->
+	<br/><br/>
 	<div id="telaFooter">
 		<div id="ajudas">
 			
-			<a href="../ajudaTroca/"><img src="/osindicadosmedia/img/ajuda.png"/></a>
-            {% if not eliminadas %}<a href="#" onclick="ajudaElimina(); return false;"><img src="/osindicadosmedia/img/ajuda.png"/></a> {% endif %}    
-			<a href="../ajudaTempo/" onclick="alert('Aumentando seu tempo...'); return false;"><img src="/osindicadosmedia/img/ajuda.png"/></a>
+			<a href="../ajudaTroca/"><img src="/osindicadosmedia/img/reload.png" width="46px" height="" style="border-style: none"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            {% if not eliminadas %}<a href="#" onclick="ajudaElimina(); return false;"><img src="/osindicadosmedia/img/strikethrough.png" width="46px" height="" style="border-style: none"/></a> &nbsp;&nbsp;&nbsp;&nbsp;{% endif %}    
+			<a href="../ajudaTempo/" onclick="alert('Aumentando seu tempo...'); return false;"><img src="/osindicadosmedia/img/ampulheta.jpg" width="34px" height="46px" style="border-style: none"/></a>
 			<br/>
-			{{ ajudas.troca|imprimirEstrelas|safe }}
-			{{ ajudas.elimina|imprimirEstrelas|safe }}
+			{{ ajudas.troca|imprimirEstrelas|safe }} &nbsp;&nbsp;&nbsp;&nbsp;
+			{{ ajudas.elimina|imprimirEstrelas|safe }} &nbsp;&nbsp;&nbsp;&nbsp;
 			{{ ajudas.tempo|imprimirEstrelas|safe }}
 			
 			<!--<div id="ajudaTroca">
@@ -79,20 +83,50 @@
 			-->
 		</div>
 		
+		<!-- 
 		<div id="tema">
             Tema: {{ pergunta.idAssunto.id|getImagem|safe }} <br/>
         </div>
+        -->
 	</div>
 	
 {% endblock tela %}
 
 {% block sidebar %}	
 	
-	<h1>Configura&ccedil;&otilde;es</h1>
+	<h1>Voc&ecirc; est&aacute; assistindo:</h1>
 	
 	<ul>
-	    <li>Dificuldade: {{ confs.dificuldade }}</li>
-	    <li>Temas: {{ confs.temas }}</li>
+	    
+	     <li>{% for temajogo in temasjogo %}
+                {% if temajogo in confs.temas %}
+                    <span class="in">{{ temajogo }} in</span>
+                {% else %}
+                    <span class="out">{{ temajogo }} out</span>
+                {% endif %}
+            {% endfor %}
+        </li>
+        
+        <br/>
+        <br/>
+        <li>Dificuldade: {{ confs.dificuldade }}</li>
+	    
+	    <!-- 
+	    <li>{% for temaselecionado in confs.temas %}
+                {% if temaselecionado in temasjogo %}
+                    {{ temaselecionado }} in
+                {% else %}
+                    {{ temaselecionado }} out
+                {% endif %}
+            {% endfor %}
+        </li>
+        
+        <li>
+            {% for temajogo in temasjogo %}
+                    {{ temajogo }}
+            {% endfor %}
+        </li>
+        -->
 	</ul>
 	
 {% endblock sidebar %}
