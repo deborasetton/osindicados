@@ -18,7 +18,7 @@ class PerguntaAdmin(admin.ModelAdmin):
     ]
     #lista
     search_fields = ['enunciado']
-    list_display = ('idAssunto', 'enunciado', 'dificuldade')
+    list_display = ('enunciado', 'idAssunto', 'dificuldade')
     list_filter = ('idAssunto', 'dificuldade')
     list_per_page = 50
 
