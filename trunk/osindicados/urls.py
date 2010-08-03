@@ -8,6 +8,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
                        (r'^jogo/', include('osindicados.jogo.urls')),
+                       (r'^admin/backup/', include('osindicados.backup.urls')),
                        (r'^admin/', include(admin.site.urls)),
                        (r'^osindicadosmedia/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
                        (r'^$', include('osindicados.jogo.urls')),
