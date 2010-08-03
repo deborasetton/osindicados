@@ -12,14 +12,15 @@
 
 	function selectDifi(option) {
 	    if(option == 'left') {
-	        if(i == 0) i = 3;
+	        if(i == 0);
 	        else i--;
 	        document.getElementById('listdificuldades').value = dificuldade[i];
 	        document.getElementById('dificuldade').value = '' + i + 1;
 	    } else {
+	    	if (i==3);
+	        else i ++;
 	        document.getElementById('listdificuldades').value = dificuldade[i];
 	        document.getElementById('dificuldade').value = '' + i + 1;
-	        i = (++i)%4;
 	    }
 
 	}
@@ -65,10 +66,11 @@
 {% endblock sidebar%}
 
 {% block footer %}
+Dificuldade:
 <input type="hidden" name="dificuldade" value='0' id="dificuldade"/>
 <table>
  <tr><td><div id="lefclick" onclick="javascript: selectDifi('left');"><img src="/osindicadosmedia/img/seta1.png" style="cursor:pointer"> </div></td>
-	<td><input type="text" name="listdificuldades" value="Selecione" id="listdificuldades" size="10"/></td>
+	<td><input type="text" name="listdificuldades" value="Amador" id="listdificuldades" size="10"/></td>
     <td><div id="rightclick" onclick="javascript: selectDifi('right');"><img src="/osindicadosmedia/img/seta2.png" style="cursor:pointer"> </div></td></tr>
 </table>
 </form>
