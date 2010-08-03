@@ -1,6 +1,6 @@
 from django import template
-from osindicados.jogo.models import Placar, Tema
-from types import StringType
+from osindicados.jogo.models import Tema
+from distutils.tests.setuptools_build_ext import if_dl
 
 
 register = template.Library()
@@ -125,7 +125,7 @@ def printTema(tema, placar):
         acertos = placar.acertosMusica
         imagem = "grammy.png"
     
-    resultado = "<img src='/osindicadosmedia/img/" + imagem + "'/>" + str(acertos) + "<br/>"
+    resultado = "<p style=\"text-align: center; margin:0px; padding: 0px\"><img src='/osindicadosmedia/img/" + imagem + "' width=\"\" height=\"30px\"/>" + "<br/>" +  str(acertos) + "</p><br/>"
     print resultado   
     return resultado   
 
@@ -140,5 +140,22 @@ def getImagem(tema):
     obj = Tema.objects.filter(id=tema)
     print obj[0]
     img = obj[0].imagemTrofeu
-    return "<img src='/osindicadosmedia/" + img + "'/>"
+    return "<img src='/osindicadosmedia/" + img + "' style=\"vertical-align: middle;\"/>"
+       
+@register.filter
+def isInConfs(tema):
+    """
+    ....
+    """
+    
+    temas = Tema.objects.all()
+    nomes = [tema.nome for tema in temas]
+    print "Tema:", tema
+    print "Nomes:", nomes
+    
+    
+    if(tema in nomes):
+        return Tema.objects.filter(nome=tema)[0].imagemTrofeu
+    else:
+        return False;
        
