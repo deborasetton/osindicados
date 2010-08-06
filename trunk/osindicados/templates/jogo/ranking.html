@@ -1,7 +1,7 @@
 {% extends "jogo/basedesign.html" %}
 
 {% block extrahead %}
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script type="text/javascript">
     $(function() {
         $(".check").button({
@@ -16,7 +16,7 @@
 
 {% block tela %}
 	<h1 align="center">Ranking</h1>
-	    <table width="600" border=2 style="table-layout:fixed;" align="center">
+	    <table width="600" border="0" style="table-layout:fixed; background-color: #EEE9AA,#FFFFFF;" align="center" >
             <col width="14.5%">
             <col width="15.5%">
             <col width="11;6%">
@@ -24,20 +24,19 @@
             <col width="11.6%">
             <col width="11.6%">
             <col width="11.6%">
-            <col width="11.6%">
-	    	<tr>
+	    	<tr valign="bottom">
 	    		<td align="center">Nome</td>
 				<td align="center">Dificuldade</td>
-				<td align="center"><img src="/osindicadosmedia/img/vuvuzelaouro.png"></td>
-			    <td align="center"><img src="/osindicadosmedia/img/oscar.png"></td>
-                <td align="center"><img src="/osindicadosmedia/img/grammy.png"></td>
-				<td align="center"><img src="/osindicadosmedia/img/emmy.png"></td>
-				<td align="center"><img src="/osindicadosmedia/img/diploma.png"></td>
-				<td align="center"><img src="/osindicadosmedia/img/nobel.png"></td>
+				<td align="center" style="font-size: 10"><img src="/osindicadosmedia/img/vuvuzelaouro.png"><br/>Esporte</td>
+			    <td align="center" style="font-size: 10"><img src="/osindicadosmedia/img/oscar.png"><br/>Cinema</td>
+                <td align="center" style="font-size: 10"><img src="/osindicadosmedia/img/grammy.png"><br/>Música</td>
+				<td align="center" style="font-size: 10"><img src="/osindicadosmedia/img/emmy.png"><br/>Televisão</td>
+				<td align="center" style="font-size: 10"><img src="/osindicadosmedia/img/diploma.png"><br/>C. Gerais</td>
+				<td align="center" style="font-size: 10"><img src="/osindicadosmedia/img/nobel.png"><br/>Ciências</td>
 	    	</tr>
 			{% for p in placares %}
-			<tr>
-				<td>{{p.nomeJogador}}</td>
+			<tr align="center" bgcolor="#EEE9AA">
+				<td align="left">{{p.nomeJogador}}</td>
 				<td>{{p.dificuldade}}</td>
 				<td>{{p.acertosEsporte}}</td>
 				<td>{{p.acertosCinema}}</td>
@@ -48,7 +47,7 @@
 			</tr>
 			{% endfor %}
 	    </table>
-			   
+
     <br><br>
 	<div align="center">
     <a href="../config">Voltar para Configurar Partida</a>

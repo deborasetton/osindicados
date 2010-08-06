@@ -20,7 +20,7 @@ html{
 	left: 100px;
 	width: 650px;
 	height: 520px;
-	border-style: solid;
+	border-style: hidden;
 	border-width: thin;
 	}
 
@@ -31,7 +31,7 @@ html{
 	width: 130px;
 	height: 500px;
 	border: medium;
-	border-style: solid;
+	border-style: hidden;
 	border-width: thin;
 	padding-left: 5px;
 	}
@@ -43,8 +43,8 @@ html{
 	width: 133px;
 	height: 60px;
 	border: medium;
-	border-style: solid;
+	border-style: hidden;
 	border-width: thin;
 	text-align: center;
-	color: white; 
+	color: white;
 	}
