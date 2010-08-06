@@ -1,3 +1,32 @@
-<h1>Voce perdeu!</h1>
+{% extends "jogo/basedesign.html" %}
 
-Clique <a href="../config/">aqui</a> para configurar uma nova partida.
+{% block extrahead %}
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript">
+$(function(){
+	$("a").button();
+})
+</script>
+<style type="text/css">
+#background{
+	position: absolute;
+	left: 10%;
+	/* TODO: Mudar os tamanhos quando mudar a imagem*/
+	width: 1000px;
+	height: 1000px;
+	background-image: url("/osindicadosmedia/img/chuvisco.png");
+	background-repeat: no-repeat;
+	}
+</style>
+{% endblock extrahead %}
+
+{% block tela %}
+
+
+<div align="center">
+<br/><br/><br/>
+<img alt="você perdeu" src="/osindicadosmedia/img/gameover.png" width="250px"> <br/>
+<br/><br/><br/>
+<a href="../config/">Nova Partida</a>
+</div>
+{% endblock tela %}
