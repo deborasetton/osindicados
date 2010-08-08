@@ -154,7 +154,7 @@ def responder(request):
             del request.session['eliminadas']
 
         if pergunta.altCorreta == altSelecionada:
-            if int(request.session['respondidas']) == 4:
+            if int(request.session['respondidas']) == 0:
                 # Respondeu a ultima pergunta corretamente. Fim de jogo.quer
                 # Atualiza o placar antes.
                 request.session['placar'] = incrementarPlacar(request.session['placar'], pergunta)
@@ -322,6 +322,12 @@ def ranking(request):
 
 def testedesign(request):
     return render_to_response('jogo/testedesign.html')
+	
+def comojogar(request):
+    """
+    
+    """
+    return render_to_response('jogo/comojogar.html', context_instance=RequestContext(request))
 
 ########################### Funções auxiliares ##############################
 

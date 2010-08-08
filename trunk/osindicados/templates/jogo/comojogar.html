@@ -1,0 +1,55 @@
+{% extends "jogo/basedesign.html" %}
+
+{% block extrahead %}
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript">
+$(function(){
+	$("a").button();
+})
+</script>
+<style type="text/css">
+#background{
+	position: absolute;
+	left: 10%;
+	/* TODO: Mudar os tamanhos quando mudar a imagem*/
+	width: 1000px;
+	height: 7110px;
+	background-image: url("/osindicadosmedia/img/tv.png");
+	background-repeat: no-repeat;
+	}
+</style>
+{% endblock extrahead %}
+
+{% block tela %}
+
+
+<div style="text-align: justify; padding-left: 50px; padding-right: 50px; margin-top:30px; margin-bottom:30px; width:490px; height:380px; overflow: auto;"; align="left">
+<br/><br/><br/><br>
+<h1><img alt="como jogar" src="/osindicadosmedia/img/doubt.png"> Como jogar  </h1> <br/>
+
+Este &eacute; um jogo de perguntas e respostas.
+<br><br>
+Antes de jogar, voc&ecirc; deve selecionar quais dos temas voc&ecirc; deseja que sejam abordados nas perguntas, clicando em "Esporte", "Cinema", "M&uacute;sica", "Televis&atilde;o", "Conhecimentos Gerais" e "Ci&ecirc;cias". O s&iacute;mbolo verde indica um tema selecionado.
+<br><br>
+<center><img alt="como jogar" src="/osindicadosmedia/img/temas.png"></center>
+<br>
+Em seguida, &eacute; preciso escolher o n&iacute;vel das perguntas: "Amador", "Profissional", "Celebridade" ou "&Iacute;dolo", sendo a categoria "Amador" a que apresenta perguntas mais f&aacute;ceis e a categoria "&Iacute;dolo" a que apresenta as mais dif&iacute;ceis. Para mudar de n&iacute;vel, utilize as setas.
+<br><br>
+<center><img alt="como jogar" src="/osindicadosmedia/img/niveis.png"></center>
+<br>
+Para iniciar, clique em "Iniciar Partida". A primeira pergunta ser&aacute; mostrada na tela. Voc&ecirc; ter&aacute; 25 segundos para respond&ecirc;-la, selecionando uma alternativa e clicando em "responder". Para vencer neste jogo, &eacute; preciso responder 25 perguntas (sobre os temas selecionados) sem cometer nenhum erro. No topo da p&aacute;gina pode ser visto o n&uacute;mero da pergunta e a categoria a qual ela pertence e do lado direito da pergunta pode ser visto o n&uacute;mero de perguntas respondidas de cada tema at&eacute; o momento. Tamb&eacute; a direita, v&ecirc;-se os temas selecionados, o n&iacute;vel de dificuldade selecionado e o bot&atilde;o "Iniciar Nova Partida", que retorna para a p&aacute;gina inicial;
+<br><br>
+<center><img alt="como jogar" src="/osindicadosmedia/img/perguntas.png"></center>
+<br>
+Em todas as perguntas, existem 3 tipos de ajuda: "Troca de perguntas" (desconsidera-se a pergunta atual e mostra um nova pergunta), "Elimina 2 alternativas" (2 alernativas de resposta <i>incorretas</i> s&atilde;o assinaladas) e "Incrementa tempo" (adiciona-se 30 segundos ao tempo para a pergunta ser respondida). &Eacute; poss&iacute;vel usar no m&aacute;ximo 3 vezes cada uma das ajudas durante todo o jogo.
+<br><br>
+<center><img alt="como jogar" src="/osindicadosmedia/img/helpes.png"></center>
+<br>
+Caso alguma pergunta seja respondida de forma incorreta, o jogo ser&aacute; finalizado e, para retornar ao jogo, deve-se clicar em "Voltar para a Tela Inicial". Se conseguir competar o jogo respondendo todas as perguntas corretamente, ser&aacute; poss&iacute;vel inserir seu nome no ranking. O ranking est&aacute; dispon&iacute;vel na tela inicial, clicando-se em "Ver Ranking".
+<br><br>
+Boa sorte!
+<br><br>
+</div>
+
+<center> <a href="../config/">Voltar para Tela Inicial</a> </center>
+{% endblock tela %}

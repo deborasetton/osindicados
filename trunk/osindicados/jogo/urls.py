@@ -16,4 +16,5 @@ urlpatterns = patterns('osindicados.jogo.views',
   (r'^ranking/$', 'ranking'),
   (r'^design/$', 'testedesign'),
   (r'^index/$', 'index'),
+  (r'^comojogar/$', 'comojogar'),
 )

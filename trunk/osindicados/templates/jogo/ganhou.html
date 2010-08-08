@@ -1,14 +1,58 @@
-<h1>Voce ganhou!</h1>
+{% extends "jogo/basedesign.html" %}
 
-Deseja entrar para o ranking dos Indicados? <br/><br/>
+{% block extrahead %}
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-Se sim, insira seu nome aqui: 
+<style type="text/css">
+#background{
+	position: absolute;
+	left: 10%;
+	/* TODO: Mudar os tamanhos quando mudar a imagem*/
+	width: 1000px;
+	height: 711px;
+	background-image: url("/osindicadosmedia/img/tv.png");
+	background-repeat: no-repeat;
+	}
+</style>
+{% endblock extrahead %}
 
-<form name="entrarRanking_frm" method="post" action="../entrarRanking/">
-    {% csrf_token %}
-	<input type="text" name="nomeUsuario"/> <br/>
-    <input type="submit" value="Entrar para o ranking!"/>
-</form>
+{% block tela %}
 
 
-Se n&atilde;o, clique <a href="../config/">aqui</a> para voltar &agrave; tela inicial. <br/>
+
+<div align="center">
+<br>
+<img alt="voce ganhou" src="/osindicadosmedia/img/win.jpg" width="250px"> <br/>
+
+<table>
+	<tr>
+		<TD ALIGN="left"><h1>Voc&ecirc; ganhou! <img alt="voce perdeu" src="/osindicadosmedia/img/trophy.gif"></h1>
+		</td>
+	</tr>
+	<tr>
+		<TD ALIGN="left">Deseja entrar para o ranking dos Indicados?<br><br>
+		</td>
+	</tr>
+	<tr>
+		<TD ALIGN="left">Se sim, insira seu nome aqui:
+		</td>
+	</tr>
+	<tr>
+		<TD ALIGN="left">
+			<form name="entrarRanking_frm" method="post" action="../entrarRanking/">
+				{% csrf_token %}
+				<input type="text" name="nomeUsuario"/>
+				<input type="submit" value="Entrar para o ranking!"/>
+			</form>
+		</TD>
+	</tr>
+	<tr>
+		<TD ALIGN="left">Se n&atilde;o, clique <a href="../config/">aqui</a> para voltar &agrave; tela inicial.
+		</td>
+	</tr>
+</table>
+
+</div>
+{% endblock tela %}
+
+

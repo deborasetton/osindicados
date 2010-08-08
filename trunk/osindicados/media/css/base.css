@@ -9,7 +9,7 @@ html{
 	left: 10%;
 	/* TODO: Mudar os tamanhos quando mudar a imagem*/
 	width: 1000px;
-	height: 1000px;
+	height: 711px;
 	background-image: url("/osindicadosmedia/img/tv.png");
 	background-repeat: no-repeat;
 	}
@@ -27,7 +27,7 @@ html{
 #sidebar{
 	position: inherit;
 	top: 80px;
-	left: 800px;
+	left: 796px;
 	width: 130px;
 	height: 500px;
 	border: medium;
@@ -48,3 +48,7 @@ html{
 	text-align: center;
 	color: white;
 	}
+
+.temaselecionado{
+	width: 92%;
+}
