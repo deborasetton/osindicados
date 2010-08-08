@@ -1,6 +1,7 @@
 from django import template
 from osindicados.jogo.models import Tema
 from osindicados.jogo.views import temasjogo
+from ctypes.wintypes import INT
 
 
 register = template.Library()
@@ -20,12 +21,22 @@ def imprimirEstrelas(value):
     aaa
     """
     
-    imgHTML = "<img src='/osindicadosmedia/img/star.png'/>"
+    imgUsedHTML = "<img src='/osindicadosmedia/img/starblack.png'/>"
+    imgLeftHTML = "<img src='/osindicadosmedia/img/star.png'/>"
     resultado = ""
     
-    for i in range(int(value)):
-        resultado += imgHTML
+    starsLeft = int(value)
+    starsUsed = 3 - starsLeft
+
+    print "Leaaaaaaaaaaaaaaft:", starsLeft
+    print "Used:", starsUsed
     
+    for i in range(starsUsed):
+        resultado += imgUsedHTML
+    for i in range(starsLeft):
+        resultado += imgLeftHTML
+    
+    print resultado
     return resultado
 
 @register.filter

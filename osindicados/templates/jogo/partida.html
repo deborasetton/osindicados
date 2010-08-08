@@ -2,26 +2,38 @@
 
 {% block tela %}
 	{% load osindicados_filters %}
-		<div id="alternativas">
+
 	<a href="#" onclick="$('#timer').countdown('pause'); return false;">Pausar</a>
-	<h1 style="text-align: center;">Pergunta {{ respondidas|add:"1"}}/25 (tema: {{ pergunta.idAssunto.id|getImagem|safe }})</h1>
-	<br/>
-	<h2>{{ pergunta.enunciado }}</h2>
-	<form method="post" action="../responder/" name="responder_frm" id="responder_frm" onsubmit="$('#hr').get(0).value = new Date().getTime()/1000">
-		{% csrf_token %}
-			{% for alternativa in alternativas %}
-				  <input type="radio" name="alternativa" value="{{alternativa}}"> {{ alternativa }} 
-				{% if eliminadas and alternativa in eliminadas %}
-				  (eliminada)
-				{% endif %}<br/></input>
-			{% endfor %}
-		
-		<input type="hidden" name="perguntaId" value="{{pergunta.id}}"/>
-		<input type="hidden" name="hr" value="" id="hr"/>
-		<p style="text-align: center;"><input type="submit" value="responder" style="text-align: center;"/></p>
-	</form>
 	
+	<div id="pergunta-titulo"> 
+	   <h1 style="text-align: center;">
+	       Pergunta {{ respondidas|add:"1"}}/25 (tema: {{ pergunta.idAssunto.id|getImagem|safe }})
+	   </h1>
+	</div>
+	
+	<div id="replace">
+		<div id="alternativas">
+		
+			<br/>
+			<div id="form-pergunta">
+				<form method="post" action="../responder/" name="responder_frm" id="responder_frm" onsubmit="$('#hr').get(0).value = new Date().getTime()/1000">
+				<h2>{{ pergunta.enunciado }}</h2>
+					{% csrf_token %}
+						{% for alternativa in alternativas %}
+							  <input type="radio" name="alternativa" value="{{alternativa}}" id="radio{{forloop.counter}}" {% if eliminadas and alternativa in eliminadas %}disabled{% endif %}/>
+							  <label for="radio{{forloop.counter}}" class="alternativa{% if eliminadas and alternativa in eliminadas %}eliminada{% endif %}">
+							     {{ alternativa }}
+							  </label> 
+							  <br/>
+						{% endfor %}
+					
+					<input type="hidden" name="perguntaId" value="{{pergunta.id}}"/>
+					<input type="hidden" name="hr" value="" id="hr"/>
+					<input type="submit" value="responder" style="margin-left: 223px; margin-top: 30px;"/>
+				</form>
+			</div>
 		</div>
+	</div>
 		
 	<!-- <h1>Pergunta:</h1> (faltam {{ respondidas|faltam }} perguntas) -->
     
@@ -33,6 +45,10 @@
     <!-- <h1>Tempo</h1> -->
     
     <div id="timer" onmouseover="$('#timeroptions').show();" onmouseout="$('#timeroptions').hide();" style="text-align: center;"></div>
+    <div id="divloading" style="display: none;">
+	    <img style="border-style: none;" src="/osindicadosmedia/img/ajax-loader.gif">
+    </div>
+    
     
     <div id="timeroptions" style="display: none;">
 	    <a href="#" onclick="$('#timer').countdown({until: +30, format: 'S', compact: true, onExpiry: liftOff, serverSync: serverTime}); return false;">Iniciar</a>
@@ -54,9 +70,16 @@
 	
 	<!-- <h1>Ajudas Dispon&iacute;veis</h1> -->
 	<br/><br/>
-	<div id="telaFooter">
+	
 		<div id="ajudas">
-			
+			 
+			<div style="display:none;">
+			 <img height="32px" width="" style="border-style: none;" src="/osindicadosmedia/img/strikethroughdisabled.png">
+			 <img height="32px" width="" style="border-style: none;" src="/osindicadosmedia/img/ampulhetadisabled.png">
+			 <img height="32px" width="" style="border-style: none;" src="/osindicadosmedia/img/starblack.png">
+			</div>
+			 
+			<!--  
 			<a href="../ajudaTroca/"><img src="/osindicadosmedia/img/reload.png" width="" height="32px" style="border-style: none"/></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   
             {% if not eliminadas %}<a href="#" onclick="ajudaElimina(); return false;"><img src="/osindicadosmedia/img/strikethrough.png" width="" height="32px" style="border-style: none"/></a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   {% endif %}    
 			<a href="../ajudaTempo/" onclick="alert('Aumentando seu tempo...'); return false;"><img src="/osindicadosmedia/img/ampulheta.jpg" width="" height="32px" style="border-style: none"/></a>
@@ -64,23 +87,48 @@
 			{{ ajudas.troca|imprimirEstrelas|safe }} &nbsp;&nbsp;&nbsp;&nbsp;
 			{{ ajudas.elimina|imprimirEstrelas|safe }} &nbsp;&nbsp;&nbsp;&nbsp;
 			{{ ajudas.tempo|imprimirEstrelas|safe }}
-			
-			<!--<div id="ajudaTroca">
-				<a href="../ajudaTroca/"><img src="/osindicadosmedia/img/ajuda.png"/></a>
-				<span style="display:none;">{{ajudas.troca}}</span> <br/>
-				{{ ajudas.troca|imprimirEstrelas|safe }}
-			</div>
-			
-			<div id="ajudaTroca">
-				{% if not eliminadas %}<a href="#" onclick="ajudaElimina(); return false;"><img src="/osindicadosmedia/img/ajuda.png"/></a> {% endif %}
-				<br/>{{ ajudas.elimina|imprimirEstrelas|safe }}
-			</div>
-			
-			<div id="ajudaTempo">
-				<a href="../ajudaTempo/" onclick="alert('Aumentando seu tempo...'); return false;"><img src="/osindicadosmedia/img/ajuda.png"/></a>
-				<br/>{{ ajudas.tempo|imprimirEstrelas|safe }}
-			</div>
 			-->
+			
+			<table border="1" id="table-ajudas">
+			    <tr>
+			         <td>
+			             {% if ajudas.troca %}
+			                 <a href="../ajudaTroca/">
+                                <img height="32px" width="" style="border-style: none;" src="/osindicadosmedia/img/reload.png">
+                             </a>
+			             {% else %}
+			                 <img height="32px" width="" style="border-style: none;" src="/osindicadosmedia/img/reloaddisabled.jpg">
+			             {% endif %}
+			         
+			            
+			         </td>
+			         <td>
+			             {% if ajudas.elimina and not eliminadas%}
+				             <a onclick="ajudaElimina(); return false;" href="#" id="linkElimina">
+				                 <img height="32px" width="" style="border-style: none;" src="/osindicadosmedia/img/strikethrough.png">
+				             </a>
+			             {% else %}
+                             <img height="32px" width="" style="border-style: none;" src="/osindicadosmedia/img/strikethroughdisabled.png">
+                         {% endif %}
+			         </td>
+			         <td>
+			             {% if ajudas.tempo %}
+				             <a onclick="$('#timer').countdown('change', {until: (($('#timer').countdown('getTimes'))[6]+30)}); aumentarTempo(); return false;" href="../ajudaTempo/" id="linkTempo">
+				                 <img height="32px" width="" style="border-style: none;" src="/osindicadosmedia/img/ampulheta.jpg">
+				             </a>
+			             {% else %}
+                             <img height="32px" width="" style="border-style: none;" src="/osindicadosmedia/img/ampulhetadisabled.jpg">
+                         {% endif %}
+			         </td>
+			    </tr>
+			    <tr>
+			         <td>{{ ajudas.troca|imprimirEstrelas|safe }}</td>
+			         <td id="imagensElimina">{{ ajudas.elimina|imprimirEstrelas|safe }}</td>
+			         <td id="imagensTempo">{{ ajudas.tempo|imprimirEstrelas|safe }}</td>
+			    </tr>
+			</table>
+			
+			
 		</div>
 		
 		<!-- 
@@ -88,7 +136,7 @@
             Tema: {{ pergunta.idAssunto.id|getImagem|safe }} <br/>
         </div>
         -->
-	</div>
+	
 	
 {% endblock tela %}
 

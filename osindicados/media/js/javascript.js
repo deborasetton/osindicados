@@ -23,12 +23,11 @@ function serverTime() {
 
 function aumentarTempo() { 
     $.ajax({url: 'http://localhost:8000/jogo/ajudaTempo/', 
-        async: false, dataType: 'text', 
-        success: function(text) { 
-            alert('ok'); 
-        }, error: function(http, message, exc) { 
+        async: true, dataType: 'text', 
+        error: function(http, message, exc) { 
             alert('erro');
     }}); 
+    apagarUmaEstrelaDoTempo();
 }
 
 function highlightLast5(periods) { 
@@ -48,7 +47,57 @@ function highlightLast5(periods) {
  });
  
  function ajudaElimina() {
-    $('#alternativas').load("http://localhost:8000/jogo/ajudaElimina/ #alternativas")
+	$('#timer').countdown('pause');
+	$('#timer').hide();
+	$('#divloading').show();
+    $('#replace').load("http://localhost:8000/jogo/ajudaElimina/ #alternativas", function(){
+    	$('#timer').countdown('resume');
+    	$('#timer').show();
+    	$('#divloading').hide();
+	});
+    $('#linkElimina').replaceWith('<img height="32px" width="" style="border-style: none;" src="/osindicadosmedia/img/strikethroughdisabled.png">');
+    apagarUmaEstrela();
+}
+ 
+ function apagarUmaEstrela() {
+	 
+	 imagens = $('#table-ajudas #imagensElimina img');
+
+	 $.each(imagens,
+	     function(index, imgtag) {
+	           var src = ($(imgtag).attr("src") === "/osindicadosmedia/img/star.png")
+	                     ? "/osindicadosmedia/img/starblack.png" 
+	                     : "/osindicadosmedia/img/star.png";  
+	     
+	     if((src) === "/osindicadosmedia/img/starblack.png")
+	     {
+	          //alert(src);
+	         $(imgtag).attr("src", src);
+	            return false;
+	     }
+	    
+	 });
+ }
+ 
+ function apagarUmaEstrelaDoTempo(){
+	 imagens = $('#table-ajudas #imagensTempo img');
+	 var achou;
+	 
+	 $.each(imagens,
+	     function(index, imgtag) {
+	           var src = ($(imgtag).attr("src") === "/osindicadosmedia/img/star.png")
+	                     ? "/osindicadosmedia/img/starblack.png" 
+	                     : "/osindicadosmedia/img/star.png";  
+	     
+	     if((src) === "/osindicadosmedia/img/starblack.png")
+	     {
+	          //alert(src);
+	         $(imgtag).attr("src", src);
+	         return false;
+	     }
+	 });
+	 
+	 $('#linkTempo').replaceWith('<img height="32px" width="" style="border-style: none;" src="/osindicadosmedia/img/ampulhetadisabled.jpg">');
  }
  
  

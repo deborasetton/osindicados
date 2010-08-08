@@ -110,6 +110,11 @@ def responder(request):
     O request deve conter a resposta dada pelo usuário e o id da pergunta.
     """
     # Verificacao de tempo
+    
+    hr_inicio = request.session.get('hr_inicio')
+    print "Sessao", request.session
+    print hr_inicio
+    
     horarioInicio = float(request.session['hr_inicio']) # Horario em que o timer foi iniciado
     horarioFim = float(request.POST['hr']) # Horario em que o form foi submetido
 
@@ -117,7 +122,7 @@ def responder(request):
         # Se houve extensao, o usuario teve 60 segundos para responder
         horarioFimTeorico = horarioInicio + 60
         del request.session['hr_extensao']
-        del request.session['hr_inicio']
+        #del request.session['hr_inicio']
     else:
         # Se nao houve extensao, o usuario teve so 30 segundos para responder
         horarioFimTeorico = horarioInicio + 30
@@ -245,6 +250,8 @@ def horario(request):
     """
     now = time.time()
     request.session['hr_inicio'] = now
+    print "horario: ", request.session['hr_inicio']
+    print "Sessao", request.session
     return HttpResponse(now)
 
 def ajudaTempo(request):

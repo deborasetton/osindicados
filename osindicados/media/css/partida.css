@@ -52,10 +52,9 @@ html{
 }
 
 #placar{
-    color: black;
-    float: right;
-    margin-right: 30px;
-    margin-top: -219px;
+    margin-left: 576px;
+    margin-top: 51px;
+    position: absolute;
 }
 
 #tema{
@@ -78,10 +77,15 @@ body{
 #alternativas{
     color: black;
     padding: 0px 50px;
+    position: absolute;
+    margin-top: 60px;
 }
 
 #ajudas{
+    margin-left: 230px;
+	margin-top: 330px;
     text-align: center;
+    position: absolute;
 }
 
 .in{
@@ -119,4 +123,42 @@ h1.sidebar{
 
 .ui-icon.naoselecionado{
     background-image: url("images/ui-icons_222222_mod_256x240.png");
+}
+
+#pergunta-titulo{
+	margin-left: 200px;
+	margin-top: -10px;
+    position:absolute;
+}
+
+#timer{
+    position: absolute;
+    margin-top: 280px;
+    margin-left: 300px;
+}
+
+#form-pergunta{
+    width: 93%;
+}
+
+#table-ajudas{
+    color: black;
+}
+
+#table-ajudas tr {
+    color: black;
+}
+
+#table-ajudas td{
+    color: black;
+}
+
+.alternativaeliminada {
+	text-decoration: line-through;
+}
+
+#divloading {
+    margin-left: 309px;
+    margin-top: 289px;
+    position: absolute;
 }
