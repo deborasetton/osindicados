@@ -44,7 +44,15 @@ function highlightLast5(periods) {
       onExpiry: liftOff, 
       onTick: highlightLast5, 
       serverSync: serverTime});
- });
+	
+	valor = $('#responder_frm input[type=submit]').position().top;
+	valor += 122;
+	$('#timer').css('margin-top', valor + 'px');
+});
+ 
+$(window).load(function () {
+	$('#loading_inicio').hide();
+});
  
  function ajudaElimina() {
 	$('#timer').countdown('pause');
@@ -55,7 +63,7 @@ function highlightLast5(periods) {
     	$('#timer').show();
     	$('#divloading').hide();
 	});
-    $('#linkElimina').replaceWith('<img height="32px" width="" style="border-style: none;" src="/osindicadosmedia/img/strikethroughdisabled.png">');
+    $('#linkElimina').replaceWith('<img height="32px" width="" style="border-style: none;" src="/osindicadosmedia/img/strikethroughdisabled.png" title="Voc&ecirc; j&aacute; esgotou suas ajudas de elimina&ccedil;&atilde;o para essa pergunta" alt="Voc&ecirc; j&aacute; esgotou suas ajudas de elimina&ccedil;&atilde;o para essa pergunta!">');
     apagarUmaEstrela();
 }
  
@@ -97,7 +105,7 @@ function highlightLast5(periods) {
 	     }
 	 });
 	 
-	 $('#linkTempo').replaceWith('<img height="32px" width="" style="border-style: none;" src="/osindicadosmedia/img/ampulhetadisabled.jpg">');
+	 $('#linkTempo').replaceWith('<img height="32px" width="" style="border-style: none;" src="/osindicadosmedia/img/ampulhetadisabled.jpg" title="Voc&ecirc; j&aacute; esgotou suas ajudas de tempo para essa pergunta!" alt="Voc&ecirc; j&aacute; esgotou suas ajudas de tempo para essa pergunta!">');
  }
  
  
