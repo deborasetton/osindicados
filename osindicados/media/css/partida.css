@@ -28,7 +28,7 @@ html{
     position: inherit;
     top: 80px;
     left: 800px;
-    width: 130px;
+    width: 147px;
     height: 500px;
     border: medium;
     border-style: solid;
@@ -90,4 +90,33 @@ body{
 
 .out{
 	color: red;
+}
+
+.temaselecionado{
+    width: 95%;
+    margin: 3px;
+}
+
+
+h1.sidebar{
+    color: white;
+    font-family: Arial, Verdana;
+    font-size: 18px;
+    text-align: center;    
+}
+
+.nomeDificuldade{
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 30px;
+    margin-top: -10px;
+    color: yellow;
+}
+
+.naoselecionado{
+	background-image: url("images/ui-icons_222222_mod_256x240.png");
+}
+
+.ui-icon.naoselecionado{
+    background-image: url("images/ui-icons_222222_mod_256x240.png");
 }

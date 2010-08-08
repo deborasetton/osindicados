@@ -10,10 +10,9 @@ from osindicados.jogo.partidaconfs import *
 from osindicados.jogo.utils import sortearAlternativas, selectPlacares
 import time
 import random
-from django.core.context_processors import request
 
 
-temasjogo = ['Esporte', 'Cinema', 'Música', 'Conhecimentos Gerais', 'Ciências']
+temasjogo = ['Esporte', 'Cinema', u'Música', u'Televisão', 'Conhecimentos Gerais', u'Ciências']
 
 def index(request):
     temas = Tema.objects.all()
@@ -62,7 +61,7 @@ def partida(request):
         request.session['alternativas'] = mixed
         print "Eliminadas: ", request.session.get('eliminadas')
 
-        return render_to_response('jogo/partida.html', {'confs': request.session['confs'], 'pergunta' : pergunta, 'alternativas' : mixed, 'respondidas' : request.session.get('respondidas'), 'ajudas' : request.session.get('ajudas'), 'eliminadas' : request.session.get('eliminadas'), 'placar' : request.session.get('placar')}, context_instance=RequestContext(request))
+        return render_to_response('jogo/partida.html', {'confs': request.session['confs'], 'pergunta' : pergunta, 'alternativas' : mixed, 'respondidas' : request.session.get('respondidas'), 'ajudas' : request.session.get('ajudas'), 'eliminadas' : request.session.get('eliminadas'), 'placar' : request.session.get('placar'), 'temasjogo' : temasjogo}, context_instance=RequestContext(request))
     # Usuário ainda não configurou a partida
     else:
         return HttpResponse("Vc ainda nao configurou sua partida.")

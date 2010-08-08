@@ -1,6 +1,6 @@
 from django import template
 from osindicados.jogo.models import Tema
-from distutils.tests.setuptools_build_ext import if_dl
+from osindicados.jogo.views import temasjogo
 
 
 register = template.Library()
@@ -158,4 +158,42 @@ def isInConfs(tema):
         return Tema.objects.filter(nome=tema)[0].imagemTrofeu
     else:
         return False;
-       
+   
+@register.filter
+def printVoceEstaAssistindo(temasSelecionados):
+    """
+    """
+    print "Temas:"
+    for tema in temasSelecionados:
+        print tema
+        
+    print "TemasJogo:"    
+    for temajogo in temasjogo:
+        print temajogo
+   
+@register.filter
+def nomeDificuldade(numeroDificuldade):
+    """
+    """
+    print "Numero dificuldade:", numeroDificuldade
+    numDificuldade = int(numeroDificuldade)
+    
+    if numDificuldade == 0:
+        return "Amador"
+    elif numDificuldade == 1:
+        return "Profissional" 
+    elif numDificuldade == 2:
+        return "Celebridade"
+    elif numDificuldade == 3:
+        return "&Iacute;dolo"
+    else:
+        return "Desconhecida"   
+    
+    
+    
+    
+    
+    
+    
+    
+      
