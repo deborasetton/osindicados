@@ -3,7 +3,7 @@
 {% block tela %}
 	{% load osindicados_filters %}
 		<div id="alternativas">
-	
+	<a href="#" onclick="$('#timer').countdown('pause'); return false;">Pausar</a>
 	<h1 style="text-align: center;">Pergunta {{ respondidas|add:"1"}}/25 (tema: {{ pergunta.idAssunto.id|getImagem|safe }})</h1>
 	<br/>
 	<h2>{{ pergunta.enunciado }}</h2>
@@ -57,9 +57,9 @@
 	<div id="telaFooter">
 		<div id="ajudas">
 			
-			<a href="../ajudaTroca/"><img src="/osindicadosmedia/img/reload.png" width="46px" height="" style="border-style: none"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
-            {% if not eliminadas %}<a href="#" onclick="ajudaElimina(); return false;"><img src="/osindicadosmedia/img/strikethrough.png" width="46px" height="" style="border-style: none"/></a> &nbsp;&nbsp;&nbsp;&nbsp;{% endif %}    
-			<a href="../ajudaTempo/" onclick="alert('Aumentando seu tempo...'); return false;"><img src="/osindicadosmedia/img/ampulheta.jpg" width="34px" height="46px" style="border-style: none"/></a>
+			<a href="../ajudaTroca/"><img src="/osindicadosmedia/img/reload.png" width="" height="32px" style="border-style: none"/></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   
+            {% if not eliminadas %}<a href="#" onclick="ajudaElimina(); return false;"><img src="/osindicadosmedia/img/strikethrough.png" width="" height="32px" style="border-style: none"/></a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   {% endif %}    
+			<a href="../ajudaTempo/" onclick="alert('Aumentando seu tempo...'); return false;"><img src="/osindicadosmedia/img/ampulheta.jpg" width="" height="32px" style="border-style: none"/></a>
 			<br/>
 			{{ ajudas.troca|imprimirEstrelas|safe }} &nbsp;&nbsp;&nbsp;&nbsp;
 			{{ ajudas.elimina|imprimirEstrelas|safe }} &nbsp;&nbsp;&nbsp;&nbsp;
@@ -94,23 +94,63 @@
 
 {% block sidebar %}	
 	
-	<h1>Voc&ecirc; est&aacute; assistindo:</h1>
+	<h1 class="sidebar">Voc&ecirc; est&aacute; assistindo:</h1>
 	
+	<!--  
+	Temas jogo: <br/>	 
 	<ul>
+	       {% for temajogo in temasjogo %}
+               <li>{{ temajogo }}</li>
+            {% endfor %}
+	</ul>
+	
+	Confs.Temas:
+	<ul>
+	       {% for tema in confs.temas %}
+                <li>{{tema}}</li>
+            {% endfor %}
+	</ul>
+	-->
+	
+	
+	
 	    
-	     <li>{% for temajogo in temasjogo %}
+	           
+	     {% for temajogo in temasjogo %}
                 {% if temajogo in confs.temas %}
-                    <span class="in">{{ temajogo }} in</span>
+                    <!-- <span class="in">{{ temajogo }} in</span> -->
+                
+                    <label class="temaselecionado ui-state-active ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon" for="{{ temajogo }}">
+                        <span class="ui-button-icon-primary ui-icon ui-icon-circle-check"></span>
+                        <span class="ui-button-text" style="text-align: left; cursor: default;">{{ temajogo }}</span>
+                    </label>
+                    
+                    
                 {% else %}
-                    <span class="out">{{ temajogo }} out</span>
+                    <!-- <span class="out">{{ temajogo }} out</span> -->
+                    <label for="{{ temajogo }}" class="temaselecionado ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon" aria-pressed="false" role="button" aria-disabled="false">
+                        <span class="ui-button-icon-primary ui-icon ui-icon-circle-check naoselecionado" id="naoselecionado-{{forloop.counter}}"></span>
+                        <span class="ui-button-text" style="text-align: left; cursor: default;">{{ temajogo }}</span>
+                    </label>
+                    
+                    
                 {% endif %}
             {% endfor %}
-        </li>
+        
         
         <br/>
         <br/>
-        <li>Dificuldade: {{ confs.dificuldade }}</li>
+    
+        <h1 class="sidebar">Dificuldade:</h1>
+        
+        
+        <p class="nomeDificuldade">{{ confs.dificuldade|nomeDificuldade }}</p>
 	    
+	    <p style="text-align: center;">
+		    <a href="../config/" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false" style="width: 90%; ">
+		       <span class="ui-button-text">Iniciar nova Partida</span>
+		    </a>
+	    </p>
 	    <!-- 
 	    <li>{% for temaselecionado in confs.temas %}
                 {% if temaselecionado in temasjogo %}
@@ -127,6 +167,5 @@
             {% endfor %}
         </li>
         -->
-	</ul>
-	
+		
 {% endblock sidebar %}
