@@ -46,9 +46,15 @@
 <form action="../config/" method="post">
 {% csrf_token %}
 
-<table align="center">
-<tr><td><input type="submit" value="Iniciar Partida"></td></tr>
-<tr style="font-size: small;"><td><a href="../ranking/">Ver Ranking</a><br></td><td><a href="../comojogar/">Como Jogar</a><br></td></tr>
+<table align="center" border="0" cellpadding="3">
+	<tr>
+		<td><input style="color: #B1FB17; font-size: 20px;" type="submit" value="Iniciar Partida">
+		</td>
+		<td><a href="../ranking/">Ver Ranking</a>
+		</td>
+		<td><a href="../comojogar/">Como Jogar</a><br>
+		</td>
+	</tr>
 </table>
 
 {% endblock tela %}
@@ -57,7 +63,7 @@
 	<table style="font-size: small;" align="center">
 		<tr><td>
 	{% for tema in temas %}
-		<input type="checkbox" name="temas" value="{{tema}}" class="check" id="{{tema}}" checked/><label for="{{tema}}">{{tema}}</label><br/>
+		<input type="checkbox" name="temas" value="{{tema}}" class="check" id="{{tema}}" checked/><label for="{{tema}}" class="temaselecionado">{{tema}}</label><br/>
 		</td></tr><tr><td>
 
 	{% endfor %}

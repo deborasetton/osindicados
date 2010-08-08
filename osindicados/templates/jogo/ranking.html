@@ -19,7 +19,7 @@
 	    <table width="600" border="0" style="table-layout:fixed; background-color: #EEE9AA,#FFFFFF;" align="center" >
             <col width="14.5%">
             <col width="15.5%">
-            <col width="11;6%">
+            <col width="11.6%">
             <col width="11.6%">
             <col width="11.6%">
             <col width="11.6%">
@@ -50,22 +50,22 @@
 
     <br><br>
 	<div align="center">
-    <a href="../config">Voltar para Configurar Partida</a>
+    <a href="../config">Voltar para Tela Inicial</a>
 	</div>
 {% endblock tela %}
 {% block sidebar %}
 <form action="../ranking/" name="temas_form" id="temas_form" method="post">
     <table style="font-size: small;" align="center">
     <tr><td>
-    <h2>Filtros</h2>
+    <center><h2 style="color: white;">Filtros:</h2></center>
 	   </td></tr><tr><td>
 		{% csrf_token %}
 		{% for t in temas %}
-		  <input type="checkbox" name="temasSelecionados" value="{{t.nome}}" id="{{t.nome}}" class="check"/><label for="{{t.nome}}">{{t.nome}}</label></br>
+		  <input type="checkbox" name="temasSelecionados" value="{{t.nome}}" id="{{t.nome}}" class="check"/><label class="temaselecionado" for="{{t.nome}}">{{t.nome}}</label></br>
 		  </td></tr><tr><td>
     	{% endfor %}
 		</br></br>
-    <input type="submit" value="Aplicar Filtros">
+    <input type="submit" class="temaselecionado" value="Aplicar Filtros">
     </td></tr>
 	</table>
 </form>
