@@ -3,6 +3,11 @@
 {% block tela %}
 	{% load osindicados_filters %}
 
+    <div id="loading_inicio">
+	    <img src="/osindicadosmedia/img/tv_carregando.png" style="margin-top: -5px; position: absolute; z-index:1;">
+	    <img src="/osindicadosmedia/img/ajax-loader_pergunta.gif" style="margin-left:580px; margin-top: 410px; position: absolute; z-index:2;">
+    </div>
+
 	<a href="#" onclick="$('#timer').countdown('pause'); return false;">Pausar</a>
 	
 	<div id="pergunta-titulo"> 
@@ -29,7 +34,7 @@
 					
 					<input type="hidden" name="perguntaId" value="{{pergunta.id}}"/>
 					<input type="hidden" name="hr" value="" id="hr"/>
-					<input type="submit" value="responder" style="margin-left: 223px; margin-top: 30px;"/>
+					<input type="submit" value="responder" onclick="$('#loading_inicio').show();" style="margin-left: 223px; margin-top: 30px;"/>
 				</form>
 			</div>
 		</div>
@@ -75,7 +80,7 @@
 			 
 			<div style="display:none;">
 			 <img height="32px" width="" style="border-style: none;" src="/osindicadosmedia/img/strikethroughdisabled.png">
-			 <img height="32px" width="" style="border-style: none;" src="/osindicadosmedia/img/ampulhetadisabled.png">
+			 <img height="32px" width="" style="border-style: none;" src="/osindicadosmedia/img/ampulhetadisabled.jpg">
 			 <img height="32px" width="" style="border-style: none;" src="/osindicadosmedia/img/starblack.png">
 			</div>
 			 
@@ -89,15 +94,15 @@
 			{{ ajudas.tempo|imprimirEstrelas|safe }}
 			-->
 			
-			<table border="1" id="table-ajudas">
+			<table id="table-ajudas">
 			    <tr>
 			         <td>
 			             {% if ajudas.troca %}
 			                 <a href="../ajudaTroca/">
-                                <img height="32px" width="" style="border-style: none;" src="/osindicadosmedia/img/reload.png">
+                                <img height="32px" width="" style="border-style: none;" src="/osindicadosmedia/img/reload.png" title="Trocar Pergunta" alt="Trocar Pergunta">
                              </a>
 			             {% else %}
-			                 <img height="32px" width="" style="border-style: none;" src="/osindicadosmedia/img/reloaddisabled.jpg">
+			                 <img height="32px" width="" style="border-style: none;" src="/osindicadosmedia/img/reloaddisabled.png" title="Voc&ecirc; j&aacute; esgotou suas ajudas de troca!" alt="Voc&ecirc; j&aacute; esgotou suas ajudas de troca!">
 			             {% endif %}
 			         
 			            
@@ -105,19 +110,19 @@
 			         <td>
 			             {% if ajudas.elimina and not eliminadas%}
 				             <a onclick="ajudaElimina(); return false;" href="#" id="linkElimina">
-				                 <img height="32px" width="" style="border-style: none;" src="/osindicadosmedia/img/strikethrough.png">
+				                 <img height="32px" width="" style="border-style: none;" src="/osindicadosmedia/img/strikethrough.png" title="Eliminar duas alternativas" alt="Eliminar duas alternativas">
 				             </a>
 			             {% else %}
-                             <img height="32px" width="" style="border-style: none;" src="/osindicadosmedia/img/strikethroughdisabled.png">
+                             <img height="32px" width="" style="border-style: none;" src="/osindicadosmedia/img/strikethroughdisabled.png" title="Voc&ecirc; j&aacute; esgotou suas ajudas de elimina&ccedil;&atilde;o" alt="Voc&ecirc; j&aacute; esgotou suas ajudas de elimina&ccedil;&atilde;o!">
                          {% endif %}
 			         </td>
 			         <td>
 			             {% if ajudas.tempo %}
 				             <a onclick="$('#timer').countdown('change', {until: (($('#timer').countdown('getTimes'))[6]+30)}); aumentarTempo(); return false;" href="../ajudaTempo/" id="linkTempo">
-				                 <img height="32px" width="" style="border-style: none;" src="/osindicadosmedia/img/ampulheta.jpg">
+				                 <img height="32px" width="" style="border-style: none;" src="/osindicadosmedia/img/ampulheta.jpg" title="Aumentar o tempo" alt="Aumentar o tempo">
 				             </a>
 			             {% else %}
-                             <img height="32px" width="" style="border-style: none;" src="/osindicadosmedia/img/ampulhetadisabled.jpg">
+                             <img height="32px" width="" style="border-style: none;" src="/osindicadosmedia/img/ampulhetadisabled.jpg" title="Voc&ecirc; j&aacute; esgotou suas ajudas de tempo!" alt="Voc&ecirc; j&aacute; esgotou suas ajudas de tempo!" >
                          {% endif %}
 			         </td>
 			    </tr>

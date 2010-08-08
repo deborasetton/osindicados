@@ -118,25 +118,31 @@ def printTema(tema, placar):
     """
     
     if(tema == 'Esporte'):
+        nomeTema = 'Esporte'
         acertos = placar.acertosEsporte
         imagem = "vuvuzelaouro.png"
     elif(tema == 'Conhecimentos Gerais'):
+        nomeTema = 'Conhecimentos Gerais'
         acertos = placar.acertosCGerais
         imagem = "diploma.png"
     elif(tema == 'Cinema'):
+        nomeTema = 'Cinema'
         acertos = placar.acertosCinema
         imagem = "oscar.png"
     elif(tema == u'Televis\xe3o'):
+        nomeTema = u'Televis\xe3o'
         acertos = placar.acertosTelevisao
         imagem = "emmy.png"
     elif(tema == u'Ci\xeancias'):
+        nomeTema = u'Ci\xeancias'
         acertos = placar.acertosCiencias
         imagem = "nobel.png"
     elif(tema == u'M\xfasica'):
+        nomeTema = u'M\xfasica'
         acertos = placar.acertosMusica
         imagem = "grammy.png"
     
-    resultado = "<p style=\"text-align: center; margin:0px; padding: 0px\"><img src='/osindicadosmedia/img/" + imagem + "' width=\"\" height=\"30px\"/>" + "<br/>" +  str(acertos) + "</p><br/>"
+    resultado = "<p style=\"text-align: center; margin:0px; padding: 0px\"><img src='/osindicadosmedia/img/" + imagem + "' width=\"\" height=\"30px\" title='Pontos de " + nomeTema + "' alt='Pontos de " + nomeTema + "' />" + "<br/>" +  str(acertos) + "</p><br/>"
     print resultado   
     return resultado   
 
@@ -145,13 +151,11 @@ def getImagem(tema):
     """
     ....
     """
-    print "ENTROOOOOOOOOOOOOOOOOOOOOOU"
-    print tema
-    
     obj = Tema.objects.filter(id=tema)
     print obj[0]
     img = obj[0].imagemTrofeu
-    return "<img src='/osindicadosmedia/" + img + "' style=\"vertical-align: middle;\"/>"
+    nomeTema = obj[0].nome
+    return "<img src='/osindicadosmedia/" + img + "' style=\"vertical-align: middle;\" title='" + nomeTema + "' alt='" + nomeTema + "' />"
        
 @register.filter
 def isInConfs(tema):

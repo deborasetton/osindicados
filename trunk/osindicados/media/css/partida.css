@@ -17,22 +17,22 @@ html{
 #tela{
     position: inherit;
     top: 100px;
-    left: 100px;
+    left: 94px;
     width: 650px;
     height: 520px;
-    border-style: solid;
-    border-width: thin;
+    /* border-style: solid;
+    border-width: thin; */
     }
 
 #sidebar{
     position: inherit;
     top: 80px;
-    left: 800px;
+    left: 799px;
     width: 147px;
     height: 500px;
     border: medium;
-    border-style: solid;
-    border-width: thin;
+     /* border-style: solid;
+    border-width: thin; */
     padding-left: 5px;
     }
 
@@ -43,8 +43,8 @@ html{
     width: 120px;
     height: 60px;
     border: medium;
-    border-style: solid;
-    border-width: thin;
+     /* border-style: solid;
+    border-width: thin; */
     }
     
 #alternativas h2{
@@ -79,10 +79,11 @@ body{
     padding: 0px 50px;
     position: absolute;
     margin-top: 60px;
+    width: 77%;
 }
 
 #ajudas{
-    margin-left: 230px;
+    margin-left: 195px;
 	margin-top: 330px;
     text-align: center;
     position: absolute;
@@ -133,7 +134,7 @@ h1.sidebar{
 
 #timer{
     position: absolute;
-    margin-top: 280px;
+    margin-top: 300px;
     margin-left: 300px;
 }
 
@@ -151,6 +152,7 @@ h1.sidebar{
 
 #table-ajudas td{
     color: black;
+    padding: 0 15px;
 }
 
 .alternativaeliminada {
@@ -159,6 +161,14 @@ h1.sidebar{
 
 #divloading {
     margin-left: 309px;
-    margin-top: 289px;
+    margin-top: 309px;
+    position: absolute;
+}
+
+.highlight {
+    color: red;
+}
+
+#loading_inicio{
     position: absolute;
 }
