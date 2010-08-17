@@ -37,6 +37,7 @@ function highlightLast5(periods) {
 } 
 
  $(document).ready(function() {
+ 
 	$('#timer').countdown({
       until: +30, 
       format: 'S', 
@@ -107,6 +108,21 @@ $(window).load(function () {
 	 
 	 $('#linkTempo').replaceWith('<img height="32px" width="" style="border-style: none;" src="/osindicadosmedia/img/ampulhetadisabled.jpg" title="Voc&ecirc; j&aacute; esgotou suas ajudas de tempo para essa pergunta!" alt="Voc&ecirc; j&aacute; esgotou suas ajudas de tempo para essa pergunta!">');
  }
+ 
+ function verificarSelecao() {
+	alts = $('#form-pergunta :radio');
+	pass = false;
+	$.each(alts , function(alt, index) {
+		if(index.checked) pass = true;
+	}); 
+	if(!pass){
+		alert('Selecione uma altertnativa!');
+		return false;
+	}
+	$('#loading_inicio').show();
+	return true;
+}
+
  
  
  

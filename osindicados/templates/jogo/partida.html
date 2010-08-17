@@ -8,7 +8,7 @@
 	    <img src="/osindicadosmedia/img/ajax-loader_pergunta.gif" style="margin-left:580px; margin-top: 410px; position: absolute; z-index:2;">
     </div>
 
-	<a href="#" onclick="$('#timer').countdown('pause'); return false;">Pausar</a>
+	<a href="#" onclick="$('#timer').countdown('pause'); return false;">.</a>
 	
 	<div id="pergunta-titulo"> 
 	   <h1 style="text-align: center;">
@@ -34,7 +34,7 @@
 					
 					<input type="hidden" name="perguntaId" value="{{pergunta.id}}"/>
 					<input type="hidden" name="hr" value="" id="hr"/>
-					<input type="submit" value="responder" onclick="$('#loading_inicio').show();" style="margin-left: 223px; margin-top: 30px;"/>
+					<input type="submit" value="responder" onclick="if(!verificarSelecao()) return false;" style="margin-left: 223px; margin-top: 30px;"/>
 				</form>
 			</div>
 		</div>
@@ -42,14 +42,14 @@
 		
 	<!-- <h1>Pergunta:</h1> (faltam {{ respondidas|faltam }} perguntas) -->
     
-    <!-- Dificuldade: {{ pergunta.dificuldade }} <br/> -->
+    <!-- Dificuldade: Amador <br/> -->
     
     
     <!-- Seu Placar: {{ placar }} -->
 
     <!-- <h1>Tempo</h1> -->
     
-    <div id="timer" onmouseover="$('#timeroptions').show();" onmouseout="$('#timeroptions').hide();" style="text-align: center;"></div>
+    <div id="timer" style="text-align: center;"></div>
     <div id="divloading" style="display: none;">
 	    <img style="border-style: none;" src="/osindicadosmedia/img/ajax-loader.gif">
     </div>
@@ -197,7 +197,7 @@
         <h1 class="sidebar">Dificuldade:</h1>
         
         
-        <p class="nomeDificuldade">{{ confs.dificuldade|nomeDificuldade }}</p>
+        <p class="nomeDificuldade">{{ confs.dificuldade|nomeDificuldade|safe }}</p>
 	    
 	    <p style="text-align: center;">
 		    <a href="../config/" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false" style="width: 90%; ">
