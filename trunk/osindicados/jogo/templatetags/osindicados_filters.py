@@ -195,11 +195,11 @@ def nomeDificuldade(numeroDificuldade):
     
     if numDificuldade == 0:
         return "Amador"
-    elif numDificuldade == 1:
+    elif numDificuldade == 11:
         return "Profissional" 
-    elif numDificuldade == 2:
+    elif numDificuldade == 21:
         return "Celebridade"
-    elif numDificuldade == 3:
+    elif numDificuldade == 31:
         return "&Iacute;dolo"
     else:
         return "Desconhecida"   

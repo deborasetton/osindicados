@@ -83,11 +83,11 @@ def config(request):
         # Inicializa as ajudas de acordo com a dificuldade
         # são três para o nível amador(1), duas para profissional(2), uma para celebridade(3) e nenhuma vez para ídolo(4)
         numajudas = 3 #amador
-        if request.POST['dificuldade'] == '4':
+        if request.POST['dificuldade'] == '31':
             numajudas = 0 # ídolo
-        if request.POST['dificuldade'] == '3':
+        if request.POST['dificuldade'] == '21':
             numajudas = 1 # celebridade
-        if request.POST['dificuldade'] == '2':
+        if request.POST['dificuldade'] == '11':
             numajudas = 2 # profissional
         ajudas = {'troca' : numajudas, 'elimina' : numajudas, 'tempo' : numajudas}
         request.session['ajudas'] = ajudas
@@ -154,7 +154,7 @@ def responder(request):
             del request.session['eliminadas']
 
         if pergunta.altCorreta == altSelecionada:
-            if int(request.session['respondidas']) == 0:
+            if int(request.session['respondidas']) == 4:
                 # Respondeu a ultima pergunta corretamente. Fim de jogo.quer
                 # Atualiza o placar antes.
                 request.session['placar'] = incrementarPlacar(request.session['placar'], pergunta)
@@ -265,7 +265,10 @@ def ajudaTempo(request):
     ajudas = request.session['ajudas']
     ajudasTempo = int(ajudas['tempo'])
 
-    if ajudasTempo > 0:
+    if ajudasTempo > 0:        
+        # Diminui uma ajuda de troca
+        ajudas['tempo'] = ajudasTempo - 1
+        request.session['ajudas'] = ajudas
         now = time.time()
         request.session['hr_extensao'] = now
         return HttpResponse(now)
