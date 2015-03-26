@@ -1,0 +1,1 @@
+Jogo de perguntas e respostas sobre temas variados. Possui um módulo de administração, no qual é possível realizar backups do banco de dados e gerenciar as perguntas cadastradas. Tudo para o entretenimento do usuário.
